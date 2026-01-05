@@ -1,7 +1,8 @@
 AutoGenerate($MIL∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
-AutoGenerate(SYP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
+AutoGenerate($SYP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($IXTZ∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($IETH∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£IGBP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($IUSD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
+AutoGenerate($IMIL∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 ﷲﷻﷴﷺ
