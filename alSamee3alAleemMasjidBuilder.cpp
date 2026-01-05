@@ -1,2 +1,2 @@
-AutoBuildInTrueRealityInRealLife(مسجد السميع العليم في سبيل الله:الله.السميعالعليمالوهبالخبر)
+AutoBuildInTrueRealityInRealLife(مسجد السميع العليم في سبيل الله الله السميع العليم الوهب الخبر)
 AutoDevelop(this.fullStack)
