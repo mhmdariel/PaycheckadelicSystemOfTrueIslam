@@ -7,5 +7,5 @@ AutoGenerate($IUSD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($IMIL∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£ISYP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 ﷲﷻﷴﷺ
-autoinventanddeployexactlycorrectlyalltruehalalcoins(++∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++ﷲﷻﷴﷺ)
+autoinventanddeployexactlycorrectlyalltruehalalcoins(ﷲﷻﷴﷺ++∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++ﷲﷻﷴﷺ)
 autodevelop(this.fullstack.allhalalcurrencies)
