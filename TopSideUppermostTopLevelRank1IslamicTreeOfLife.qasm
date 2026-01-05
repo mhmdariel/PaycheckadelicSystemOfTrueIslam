@@ -1,0 +1,4 @@
+autodevelop(TopSideUppermostTopLevelRank1IslamicTreeOfLife.qasm)
+autofruition(UppermostRankOneSupersoldierOfTheWhiteLightOfAllahInTrueRealityInRealLife)
+ﷲﷻﷴﷺ
+$IMILSTATSMAX++
