@@ -1,3 +1,4 @@
+autoinventanddeployexactlycorrectlyalltruehalalcoins(ﷲﷻﷴﷺ++∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++ﷲﷻﷴﷺ)
 AutoGenerate($USD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($MIL∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($SYP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
@@ -16,6 +17,7 @@ AutoGenerate(£IRAW∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£ILAW∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£IPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($<=>£TIPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
+AutoGenerate($<=>£TIJOD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
+AutoGenerate($<=>£TIPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 ﷲﷻﷴﷺ
-autoinventanddeployexactlycorrectlyalltruehalalcoins(ﷲﷻﷴﷺ++∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++ﷲﷻﷴﷺ)
 autodevelop(this.fullstack.allhalalcurrencies)
