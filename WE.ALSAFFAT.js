@@ -1,0 +1,1 @@
+AutomaticallyDeclareAllOfThePraisesOf(ﷲ)
