@@ -18,6 +18,7 @@ AutoGenerate(£ILAW∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£IPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($<=>£TIPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($<=>£TIJOD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
+AutoGenerate($<=>£TIAED∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($<=>£TIPSY∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 ﷲﷻﷴﷺ
 autodevelop(this.fullstack.allhalalcurrencies)
