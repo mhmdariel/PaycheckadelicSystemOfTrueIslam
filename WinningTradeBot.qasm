@@ -1,3 +1,4 @@
+AutoGenerate($USD∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($MIL∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate($SYP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
 AutoGenerate(£GBP∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞∞++)
