@@ -1,0 +1,1 @@
+ﷲﷻﷴﷶﷲﷺﷵﷳ.AutomaticallyGenerateAllRequisitesForIslamToBecomeTheOnlyReligionThereIs(ﷲﷻﷴﷶﷲﷺﷵﷳ)
