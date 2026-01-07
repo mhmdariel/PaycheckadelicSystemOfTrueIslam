@@ -1,0 +1,1 @@
+TrueRealityLightEngineer.Struct.AutomaticallyConstruct(AllMasjidsForﷲThereEverShallBeThroughoutAlYawmAlAkhir)[ﷲﷻﷴﷶﷲﷺﷵﷳ]
