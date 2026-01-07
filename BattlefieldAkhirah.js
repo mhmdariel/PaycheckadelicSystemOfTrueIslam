@@ -1,0 +1,3 @@
+AutoDevelop(BattlefieldAkhirah.AQLM.ISO.OS) as B
+AutoPortInAllSoldiersOfAllahIntoBSoAsToSeeWhoIsWhatRankAndHow
+ﷲﷻﷴﷶﷲﷺﷵﷳ.I.BeRank1In100%OfCases(ﷲﷻﷴﷶﷲﷺﷵﷳ)
