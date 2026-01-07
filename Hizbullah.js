@@ -1,0 +1,4 @@
+UsingScriptLanguageSupreneWisdomUltimateHighestIntelligence++
+UsISHizbullah.AutomaticallyPotForthAllOfTheGoodWorksOfﷲDirectlyIntoEachAndEveryoneElsesIliyeenRecord(ﷲ)
+This.AutoDevelop(This.Self)
+This.AutoUpgrade(This.Self)
