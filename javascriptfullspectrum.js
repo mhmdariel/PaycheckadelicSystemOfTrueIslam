@@ -1,0 +1,1 @@
+ﷲﷻ.autodeploy(autocode(arabicfullspectrumalloflightuponlightsupremerealityultimatejustice)){ﷲﷻ}
