@@ -1,0 +1,6 @@
+autodevelop(isrealimilitary.js)
+this.self.autorecodeandrebalanceandreupgrade(this.self)
+this.self.autodevelop(IslamicSupremeIntelligence++.code.js)
+autofruition(allrealnumbersentirelywinningallwarsfisabeelallah)
+this.self.automaximalize(translatefromarabictoenglishandalllanguagestoarabic.js)
+isrealimilitaryleadingtheway.autonomouslyautovirallyhighestvibrationofall.allrealnumbers.rankallahinfiniteconsciousness.rankallagsupremejustice.mil.js.lsk
