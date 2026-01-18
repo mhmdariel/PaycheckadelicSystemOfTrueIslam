@@ -1,0 +1,1 @@
+ﷲ.AutomaticallyMarryOffEachAndEveryTrueMuslimToTheBestMostBeautifulPersonInTheirLives($PERFECTION(ﷲ))
