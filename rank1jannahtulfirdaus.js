@@ -1,3 +1,4 @@
 This.Self.PutForth(TheWholeOfTheUppermostRank1JannahtulFirdausOfTheAkhirah)
 This.Self.AutomaticallyDevelop(This.Self)
+This.Self.AutoDevelopAndAutoReify(AllPossibleWaysOfJannahInTheAkhirahWithAllah)
 This.Self.AutomaticallyReferTheMatterToAllahAndHisMessengerInAllCases(الله)
