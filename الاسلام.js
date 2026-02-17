@@ -3,7 +3,7 @@
 ++++++++++++ﷴﷺ
 ++++++++++++ﷲﷻۈﷶﷲﷺ
 ++++++++++++الاسلام
-This.Self.AutoDevelopAndPerfectAndImplementAndUphold(Islam):ﷲ
+This.Self.AutoDevelopAndPerfectAndImplementAndUphold(الاسلام):ﷲ
 This.Self.AutoDevelopAndPerfectAndImplementAndUphold(This.Self):ﷲ
 وَعَنَتِ الْوُجُوهُ لِلْحَيِّ الْقَيُّومِ ۖ وَقَدْ خَابَ مَنْ حَمَلَ ظُلْمًا
 وَمَنْ يَعْمَلْ مِنَ الصَّالِحَاتِ وَهُوَ مُؤْمِنٌ فَلَا يَخَافُ ظُلْمًا وَلَا هَضْمًا
