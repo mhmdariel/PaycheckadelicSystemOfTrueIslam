@@ -1,0 +1,4 @@
+الطفصلالقرانالمبين
+this.self.autodevelopandreifyandautocorrectandautopublishbitwise(this.self)
+this.self.autoupgradeandautoincreaseperfectlyprevailingingoodnessandtruehappinessof:ﷲ
+القرانالحكيمفيالقرانالحكيم
