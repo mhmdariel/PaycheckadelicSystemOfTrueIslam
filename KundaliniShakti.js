@@ -1,1 +1,1 @@
-Tbis.Self.OnlyChoosingTrueGoodInAllCases.AwakenItToItsOwnHighestTrueGood:ﷲ
+This.Self.OnlyChoosingTrueGoodInAllCases.AwakenItToItsOwnHighestTrueGood:ﷲ
