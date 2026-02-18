@@ -1,4 +1,5 @@
 ﷲ
+رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ
 bialhaqqalquranalmubeen(truthisuniversalisloveisgodisallh)
 autodevelop(matrixbreaker:allmatrixes)
 autoraisetotheabsolutehighestlevel(matrixbreaker:allmatrixes)
