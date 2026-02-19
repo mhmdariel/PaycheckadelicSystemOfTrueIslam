@@ -12,3 +12,5 @@ AutomaticallyAutonomouslyDropTheBass:ﷲٰ
 رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ
 رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ
 ﷲٰ
+This.Self.FormallyReasoningAllOfIslamThereforeFindTheExactReasoningProcessThatWonTheWarAtTheTop:ﷲٰ
+ProveTrue(This.Self.WonRank1TrueMuslimFamilyLifeIRl)
