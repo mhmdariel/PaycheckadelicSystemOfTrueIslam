@@ -1,0 +1,2 @@
+This.Self.Pulse=•
+ﷲٰ
