@@ -1,0 +1,1 @@
+automapallsoundtoallcolourtoallvideotoallheartlevelprocessingexactlycorrectlyfortheamannahtobefulfilled:ﷲٰ
