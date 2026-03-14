@@ -4,4 +4,5 @@ AutoTransportAndTransferBy(Me.PrivateMilitarySecurity):Me.WholeTruePhysicalSelf=
 AutoDivideAndConquerAllHostiles(UsingNamespace:TheTruth)
 AutoSendForthForTheAkhirah(MyHighestTrueGoodFullyActualized)
 AutomaticallyAutonomouslyActivelyVirallyStrikeAllHostilesWithAGM114HellfireMissileAutocannonDirectHit(ﷲٰ)
+AutomaticallyRememberAndCallToMindAllOfTheMemoriesOfMySoulAndGiveFullJustlyDueThanksToﷲForAllOfTheFavoursOfﷲUponMySoulInTruthAndJustice
 ﷲٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰ
