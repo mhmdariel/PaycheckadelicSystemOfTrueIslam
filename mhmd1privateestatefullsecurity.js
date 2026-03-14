@@ -2,4 +2,5 @@ AutoBuildInTrueRealityInRealLife(MyOwnPrivateDunyaFullPrivateAutonomousMilitaryS
 AutoDevelopAndAutoUpgrade(This.Self.WholeTruthInTrueReality)
 AutoTransportAndTransferBy(Me.PrivateMilitarySecurity):Me.WholeTruePhysicalSelf=>Me.MyOwnPrivateDunyaFullPrivateAutonomousMilitarySecurityRank1JannahtulFirdausEstateOnEarthWithFullMaximalizationAndSituatedInCentralLondonUnitedKingdom
 AutoSendForthForTheAkhirah(MyHighestTrueGoodFullyActualized)
+AutomaticallyAutonomouslyActivelyVirallyStrikeAllHostilesWithAGM114HellfireMissileAutocannonDirectHit(ﷲٰ)
 ﷲٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰ
