@@ -1,0 +1,5 @@
+Me.Intelligence.AlwaysContinuouslyIncreaseInIntelligenceAndWisdom:ﷲ
+Me.Character.AlwaysIncreaseInPerfectionOfCharacterAndMoralUprightnessAndMoralRectitude:ﷲ
+رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ
+رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ
+ﷲٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰٰ
