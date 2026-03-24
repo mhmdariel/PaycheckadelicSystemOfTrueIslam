@@ -1,0 +1,6 @@
+automaticallydevelopanddeployintofullobjectivereality(allrequisiteweaponsystemsandallrequisitesforallislamicmilitariesandfightersinthewayoftrueislam):ﷲ
+this.self.automaticallytranslateintoalllanguages(this.self)
+this.self.automaticallyautonomouslycontinuouslyconsistentlyactivelyvirallyupgrade(this.self)
+this.self.automaticallyautonomouslycontinuouslyconsistentlyactivelyvirallypropagate(this.self)
+this.self.automaticallycall(this.self.ﷲ)
+ﷲ
