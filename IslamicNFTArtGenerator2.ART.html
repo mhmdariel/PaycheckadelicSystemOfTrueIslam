@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Islamic NFT Art Generator Engine</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }h1 {
+  margin-bottom: 8px;
+}
+
+p {
+  max-width: 900px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+button {
+  background: #238636;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  background: #2ea043;
+  transform: translateY(-2px);
+}
+
+canvas {
+  border: 2px solid #30363d;
+  border-radius: 18px;
+  background: black;
+  max-width: 95vw;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+}
+
+.metadata {
+  margin-top: 18px;
+  width: 90%;
+  max-width: 1000px;
+  background: #161b22;
+  padding: 18px;
+  border-radius: 16px;
+  overflow-x: auto;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #8b949e;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Islamic NFT Art Generator Engine</h1>  <p>
+    This self-executing JavaScript engine generates geometric Islamic-inspired generative art,
+    exports PNG artwork, and creates NFT-style metadata for marketplaces or decentralized archives.
+    The system avoids figurative imagery and focuses on symmetry, geometry, tessellation,
+    calligraphic flow simulation, and algorithmic pattern construction.
+  </p>  <div class="controls">
+    <button id="generateBtn">Generate New Artwork</button>
+    <button id="downloadBtn">Download PNG</button>
+    <button id="metadataBtn">Download Metadata</button>
+  </div><canvas id="artCanvas" width="1200" height="1200"></canvas>
+
+  <div class="metadata">
+    <h2>Generated NFT Metadata</h2>
+    <pre id="metadataOutput"></pre>
+  </div>  <script>
+    (() => {
+      const canvas = document.getElementById('artCanvas');
+      const ctx = canvas.getContext('2d');
+      const metadataOutput = document.getElementById('metadataOutput');
+
+      let currentMetadata = {};
+
+      const palettes = [
+        ['#0b132b', '#1c2541', '#3a506b', '#5bc0be', '#f4f4f4'],
+        ['#1a1a1d', '#4e4e50', '#6f2232', '#950740', '#c3073f'],
+        ['#0f2027', '#203a43', '#2c5364', '#f9f7f7', '#dbe2ef'],
+        ['#0f0c29', '#302b63', '#24243e', '#ffd369', '#eeeeee'],
+        ['#001219', '#005f73', '#0a9396', '#94d2bd', '#e9d8a6']
+      ];
+
+      const arabicWords = [
+        'نور',
+        'سلام',
+        'حكمة',
+        'حق',
+        'صبر',
+        'رحمة',
+        'بركة',
+        'عدل'
+      ];
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function generateBackground(colors) {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, colors[0]);
+        gradient.addColorStop(0.5, colors[1]);
+        gradient.addColorStop(1, colors[2]);
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function drawRadialGeometry(colors, complexity) {
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+
+        const layers = 12 + complexity;
+
+        for (let i = 0; i < layers; i++) {
+          const radius = 60 + i * 35;
+          const points = 6 + (i % 12);
+
+          ctx.beginPath();
+
+          for (let j = 0; j <= points; j++) {
+            const angle = (Math.PI * 2 * j) / points;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            if (j === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          ctx.closePath();
+          ctx.strokeStyle = colors[i % colors.length];
+          ctx.lineWidth = 1 + (i % 4);
+          ctx.globalAlpha = 0.85;
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function drawTessellation(colors, density) {
+        const spacing = 40 - density;
+
+        for (let x = 0; x < canvas.width; x += spacing) {
+          for (let y = 0; y < canvas.height; y += spacing) {
+            ctx.beginPath();
+            ctx.arc(x, y, rand(2, 10), 0, Math.PI * 2);
+            ctx.fillStyle = pick(colors);
+            ctx.globalAlpha = rand(0.2, 0.8);
+            ctx.fill();
+          }
+        }
+      }
+
+      function drawCalligraphicFlow(colors) {
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+
+        for (let i = 0; i < 40; i++) {
+          ctx.beginPath();
+          ctx.strokeStyle = pick(colors);
+          ctx.lineWidth = rand(1, 4);
+          ctx.globalAlpha = rand(0.2, 0.6);
+
+          const startAngle = rand(0, Math.PI * 2);
+          const endAngle = startAngle + rand(0.5, 2.5);
+          const radius = rand(120, 450);
+
+          ctx.arc(0, 0, radius, startAngle, endAngle);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function addArabicGlyph(colors) {
+        const word = pick(arabicWords);
+
+        ctx.save();
+        ctx.font = 'bold 140px serif';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = pick(colors);
+        ctx.globalAlpha = 0.15;
+        ctx.fillText(word, canvas.width / 2, canvas.height / 2);
+        ctx.restore();
+
+        return word;
+      }
+
+      function generateMetadata(seed, paletteName, complexity, glyph) {
+        currentMetadata = {
+          name: `Islamic Generative Piece #${seed}`,
+          description: 'Algorithmically generated Islamic-inspired geometric NFT artwork.',
+          external_url: 'https://example.org',
+          attributes: [
+            {
+              trait_type: 'Palette',
+              value: paletteName
+            },
+            {
+              trait_type: 'Complexity',
+              value: complexity
+            },
+            {
+              trait_type: 'Arabic Glyph',
+              value: glyph
+            },
+            {
+              trait_type: 'Style',
+              value: 'Geometric Generative Art'
+            },
+            {
+              trait_type: 'Rendering Engine',
+              value: 'Self Executing JavaScript Canvas Engine'
+            }
+          ]
+        };
+
+        metadataOutput.textContent = JSON.stringify(currentMetadata, null, 2);
+      }
+
+      function generateArtwork() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const colors = pick(palettes);
+        const complexity = Math.floor(rand(5, 20));
+        const density = Math.floor(rand(5, 20));
+        const seed = Date.now();
+
+        generateBackground(colors);
+        drawTessellation(colors, density);
+        drawRadialGeometry(colors, complexity);
+        drawCalligraphicFlow(colors);
+
+        const glyph = addArabicGlyph(colors);
+
+        generateMetadata(
+          seed,
+          colors.join(' → '),
+          complexity,
+          glyph
+        );
+      }
+
+      function downloadCanvas() {
+        const link = document.createElement('a');
+        link.download = `islamic-nft-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+
+      function downloadMetadata() {
+        const blob = new Blob([
+          JSON.stringify(currentMetadata, null, 2)
+        ], {
+          type: 'application/json'
+        });
+
+        const link = document.createElement('a');
+        link.download = `metadata-${Date.now()}.json`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+      }
+
+      document
+        .getElementById('generateBtn')
+        .addEventListener('click', generateArtwork);
+
+      document
+        .getElementById('downloadBtn')
+        .addEventListener('click', downloadCanvas);
+
+      document
+        .getElementById('metadataBtn')
+        .addEventListener('click', downloadMetadata);
+
+      generateArtwork();
+
+      console.log('Islamic NFT Art Generator Engine initialized.');
+    })();
+  </script></body>
+</html>
