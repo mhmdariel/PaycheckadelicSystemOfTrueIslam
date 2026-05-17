@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>تفكيك الواقع | Psychedelic Deconstruction of Reality</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Segoe UI', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            z-index: 1;
+        }
+
+        /* لوحة التحكم السايكدلية */
+        .control-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 0.8rem 1.5rem;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            font-weight: bold;
+            pointer-events: auto;
+        }
+
+        .stats {
+            color: #ffccff;
+            text-shadow: 0 0 8px magenta;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.6);
+            padding: 0.3rem 1rem;
+            border-radius: 3rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .arabic-text {
+            color: cyan;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px blue, 0 0 10px cyan;
+            background: rgba(0,0,0,0.5);
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            letter-spacing: 1px;
+        }
+
+        button {
+            background: linear-gradient(45deg, magenta, darkviolet);
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0.4rem 1.2rem;
+            border-radius: 3rem;
+            cursor: pointer;
+            font-family: 'Cairo', monospace;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            box-shadow: 0 0 10px violet;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, hotpink, purple);
+            box-shadow: 0 0 20px fuchsia;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 8px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 5px black;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, cyan, magenta, yellow);
+            border-radius: 10px;
+            transition: width 0.05s linear;
+            box-shadow: 0 0 12px cyan;
+        }
+
+        @media (max-width: 650px) {
+            .control-panel { padding: 0.5rem 1rem; gap: 8px; }
+            .arabic-text, .stats { font-size: 0.7rem; }
+            button { font-size: 0.7rem; padding: 0.3rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="realityCanvas"></canvas>
+
+<div class="control-panel">
+    <div class="arabic-text">🌀 تَفْكِيك الوَاقِع 🌀</div>
+    <div class="progress-container">
+        <div class="progress-bar" id="deconstructionBar"></div>
+    </div>
+    <div class="stats" id="statusText">التفكيك: 0%</div>
+    <button id="resetRealityBtn">⟳ إعادة بناء الواقع</button>
+</div>
+
+<script>
+    (function() {
+        // --------------------------------------------------------------
+        //  "الشفرة السايكدلية لتفكيك الوجود موضوعياً"
+        //  Psychedelic Deconstruction of Objective Reality
+        //  Arabic spirit meets quantum particle chaos 🕉️
+        // --------------------------------------------------------------
+
+        // عناصر القماش
+        const canvas = document.getElementById('realityCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // جسيمات الحقيقة (Particles of Reality)
+        let particles = [];
+        let W, H;
+        let center = { x: 0, y: 0 };
+        
+        // متغيرات التفكيك
+        let deconstructionProgress = 0.0;      // 0 = واقع كامل, 1 = انهيار تام
+        let targetProgress = 0.0;
+        let lastTimestamp = 0;
+        let timeAcc = 0;
+        let psychedelicTime = 0;
+        
+        // قوى التفكيك السايكدلي
+        let resetRequest = false;
+        let mouseXNorm = 0.5;    // تأثير الماوس على سرعة التفكيك (0-1)
+        
+        // إعدادات الجسيمات
+        const PARTICLE_COUNT = 4200;        // عدد كافٍ لتمثيل نسيج الواقع
+        let maxRadius = 0;
+        
+        // تحكم في سرعة التفكيك
+        let autoDeconstructionSpeed = 0.0024;   // سرعة أساسية لكل إطار (~ 0.14 في الثانية)
+        
+        // --- دوال مساعدة رياضية ---
+        function randomRange(min, max) {
+            return min + Math.random() * (max - min);
+        }
+        
+        // --- تهيئة الجسيمات بشكل هندسي مقدس / نمط كوني (تمثيل الواقع الموضوعي) ---
+        function initParticles() {
+            if (!W || !H) return;
+            center.x = W / 2;
+            center.y = H / 2;
+            maxRadius = Math.min(W, H) * 0.42;
+            
+            const newParticles = [];
+            // نمط حلزوني ذهبي + حلقات كونية لتعكس تناغم "الواقع"
+            // 1) حلقات متحدة المركز بأعداد متزايدة (تمثيل الطبقات الكونية)
+            const ringCount = 14;
+            let particleIdx = 0;
+            
+            for (let r = 1; r <= ringCount; r++) {
+                // نصف القطر: توزيع جميل من المركز إلى الحافة
+                const radiusNorm = r / ringCount;  // 0.1 .. 1.0
+                let ringRadius = maxRadius * (0.1 + radiusNorm * 0.9);
+                // عدد الجسيمات في الحلقة: يتناسب مع المحيط
+                let particlesInRing = Math.floor(28 + (r * 22));
+                if (particleIdx + particlesInRing > PARTICLE_COUNT) {
+                    particlesInRing = PARTICLE_COUNT - particleIdx;
+                }
+                for (let i = 0; i < particlesInRing; i++) {
+                    if (particleIdx >= PARTICLE_COUNT) break;
+                    const angle = (i / particlesInRing) * Math.PI * 2;
+                    // إزاحة طفيفة لجعل الماندالا عضوية (تشوّش واقعي جميل)
+                    const radialJitter = (Math.random() - 0.5) * ringRadius * 0.07;
+                    const angularJitter = (Math.random() - 0.5) * 0.12;
+                    const finalRadius = ringRadius + radialJitter;
+                    const finalAngle = angle + angularJitter;
+                    
+                    const x = center.x + Math.cos(finalAngle) * finalRadius;
+                    const y = center.y + Math.sin(finalAngle) * finalRadius;
+                    
+                    // لون أساسي حسب الزاوية والبعد (طيف سايكدلي)
+                    let hueBase = (finalAngle * 180 / Math.PI + r * 18) % 360;
+                    // تشبع عالي وإضاءة متغيرة
+                    const sat = 75 + Math.random() * 20;
+                    const light = 55 + Math.random() * 30;
+                    
+                    // حجم الجسيم: يتناقص قليلاً عند الحواف لكن بتأثير مهلوس
+                    const sizeBase = 2.2 + (Math.sin(finalAngle * 3) * 0.8) + Math.random() * 1.5;
+                    
+                    newParticles.push({
+                        // الموضع الأصلي (حقيقة ثابتة نسبياً)
+                        origX: x,
+                        origY: y,
+                        x: x,
+                        y: y,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        hueBase: hueBase,
+                        sat: sat,
+                        light: light,
+                        size: sizeBase,
+                        radiusFactor: finalRadius / maxRadius,   // بعد نسبي عن المركز
+                        angleSeed: finalAngle,
+                        chaosOffset: Math.random() * Math.PI * 2
+                    });
+                    particleIdx++;
+                }
+                if (particleIdx >= PARTICLE_COUNT) break;
+            }
+            
+            // في حالة لم نملأ العدد نضيف جسيمات عشوائية داخل الدائرة الكونية (بقايا)
+            if (particleIdx < PARTICLE_COUNT) {
+                const remaining = PARTICLE_COUNT - particleIdx;
+                for (let i = 0; i < remaining; i++) {
+                    const rad = Math.random() * maxRadius;
+                    const ang = Math.random() * Math.PI * 2;
+                    const x = center.x + Math.cos(ang) * rad;
+                    const y = center.y + Math.sin(ang) * rad;
+                    const hueBase = Math.random() * 360;
+                    newParticles.push({
+                        origX: x, origY: y,
+                        x: x, y: y,
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: (Math.random() - 0.5) * 1.5,
+                        hueBase: hueBase,
+                        sat: 70 + Math.random() * 25,
+                        light: 60 + Math.random() * 25,
+                        size: 2 + Math.random() * 2.5,
+                        radiusFactor: rad / maxRadius,
+                        angleSeed: ang,
+                        chaosOffset: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+            
+            return newParticles.slice(0, PARTICLE_COUNT);
+        }
+        
+        // إعادة ضبط كل شيء (إعادة بناء الواقع من الأوهام)
+        function resetReality() {
+            particles = initParticles();
+            deconstructionProgress = 0.0;
+            targetProgress = 0.0;
+            updateProgressBar();
+            // إعادة تعيين السرعات والمواضع للمحافظة على البداية النقية
+            for (let p of particles) {
+                p.x = p.origX;
+                p.y = p.origY;
+                p.vx = (Math.random() - 0.5) * 1.2;
+                p.vy = (Math.random() - 0.5) * 1.2;
+            }
+            psychedelicTime = 0;
+        }
+        
+        // تحديث شريط التفكيك والنص العربي
+        function updateProgressBar() {
+            const percent = Math.floor(deconstructionProgress * 100);
+            const bar = document.getElementById('deconstructionBar');
+            const statusDiv = document.getElementById('statusText');
+            if (bar) bar.style.width = (deconstructionProgress * 100) + '%';
+            if (statusDiv) {
+                if (deconstructionProgress > 0.95) statusDiv.innerHTML = `🧬 اِنْهِيَار كَامِل 🧬 ${percent}%`;
+                else if (deconstructionProgress > 0.7) statusDiv.innerHTML = `🌀 تَفكيك مُطْلَق 🌀 ${percent}%`;
+                else if (deconstructionProgress > 0.4) statusDiv.innerHTML = `⚡ تَمَزُق الوَاقِع ⚡ ${percent}%`;
+                else statusDiv.innerHTML = `🌌 تَفكيك الحَقيقَة 🌌 ${percent}%`;
+            }
+        }
+        
+        // معالجة تغيير حجم الشاشة
+        function resizeCanvas() {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width = W;
+            canvas.height = H;
+            center.x = W / 2;
+            center.y = H / 2;
+            // إعادة بناء الجسيمات بما يتناسب مع الأبعاد الجديدة
+            const oldProgress = deconstructionProgress;
+            particles = initParticles();
+            deconstructionProgress = oldProgress;
+            targetProgress = oldProgress;
+            // نعيد تركيز الجسيمات حسب الموقع الجديد، ومواضعها الأصلية محسوبة بالمركز الجديد
+            for (let p of particles) {
+                // لا نغير الموضع الحالي كثيراً بل نجعلها تتكيف مع الواقع الجديد
+                p.x = p.origX;
+                p.y = p.origY;
+            }
+            updateProgressBar();
+        }
+        
+        // --- قلب القوى السايكدلية: تفكيك كل شيء بموضوعية مطلقة ---
+        function applyDeconstructionForces(deltaTime, progress) {
+            if (!particles) return;
+            const chaosFactor = Math.min(1.0, progress * 1.2);  // 0..1.2 
+            const dt = Math.min(deltaTime, 0.033); // أمان
+            
+            // معاملات القوة: كلما زاد التفكيك تصبح القوى عنيفة ومهلوسة
+            const outwardStrength = progress * 380.0 * dt;       // قوة طرد مركزية
+            const tangentialStrength = progress * 210.0 * dt;    // قوى التفافية
+            const randomWalkStrength = progress * 280.0 * dt;     // عشوائية مطلقة
+            const warpStrength = progress * 1.9;                 // تشويه دوري
+            
+            // متغيرات زمنية لإضفاء الطابع السايكدلي المتغير
+            const timeWarp = psychedelicTime;
+            
+            for (let p of particles) {
+                // متجه من المركز
+                const dx = p.x - center.x;
+                const dy = p.y - center.y;
+                const dist = Math.hypot(dx, dy) + 0.001;
+                const nx = dx / dist;
+                const ny = dy / dist;
+                
+                // 1. القوة الطاردة المركزية (تمزق الواقع نحو الخارج)
+                let radialForceX = nx * outwardStrength * (0.8 + 0.5 * Math.sin(p.angleSeed * 3 + timeWarp));
+                let radialForceY = ny * outwardStrength * (0.8 + 0.5 * Math.cos(p.chaosOffset + timeWarp));
+                
+                // 2. قوة التفافية (دوامة التفكيك) - تجعل الجسيمات تنسلخ في حركات لولبية
+                const perpX = -ny;
+                const perpY = nx;
+                const swirl = tangentialStrength * (1.2 + 0.8 * Math.sin(timeWarp * 2.7 + p.radiusFactor * 12));
+                let tangentForceX = perpX * swirl;
+                let tangentForceY = perpY * swirl;
+                
+                // 3. موجات تشويه سايكدلية : تموجات تعتمد على الزاوية والوقت
+                const waveX = Math.sin(p.angleSeed * 7 + timeWarp * 5) * warpStrength * progress * 35 * dt;
+                const waveY = Math.cos(p.angleSeed * 5 + timeWarp * 4.3) * warpStrength * progress * 35 * dt;
+                
+                // 4. عشوائية فوضوية (تمثل انهيار السببية)
+                let randX = (Math.random() - 0.5) * randomWalkStrength;
+                let randY = (Math.random() - 0.5) * randomWalkStrength;
+                
+                // 5. عند مستويات تفكيك عالية نضيف قوى "تمزق زمكاني": كل جسيم يتأثر بموقعه النسبي بشكل مفرط
+                if (progress > 0.65) {
+                    const hyperChaos = (progress - 0.65) * 420 * dt;
+                    randX += (Math.sin(p.x * 0.02 + timeWarp * 12) * hyperChaos);
+                    randY += (Math.cos(p.y * 0.02 + timeWarp * 11) * hyperChaos);
+                }
+                
+                // جمع القوى وتحديث السرعة
+                p.vx += radialForceX + tangentForceX + waveX + randX;
+                p.vy += radialForceY + tangentForceY + waveY + randY;
+                
+                // احتكاك بسيط يمنع السرعة الجامحة مع الحفاظ على الديناميكية
+                p.vx *= (1 - dt * 0.85);
+                p.vy *= (1 - dt * 0.85);
+                
+                // تحديد السرعة القصوى (لا نهائية ولكن ضمن حدود واقع التفكيك)
+                const maxSpeed = 600 + progress * 900;
+                let spd = Math.hypot(p.vx, p.vy);
+                if (spd > maxSpeed) {
+                    p.vx = (p.vx / spd) * maxSpeed;
+                    p.vy = (p.vy / spd) * maxSpeed;
+                }
+                
+                // تحديث الموقع
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                
+                // تأثير إضافي: عندما يتفكك الواقع بشدة، بعض الجسيمات تعبر الأبعاد (نطير خارج الشاشة لا بأس)
+                // لن نعيدها حدودياً لأن التفكيك المطلق يعني الخروج من نسيج الإدراك.
+                // عند إعادة الضبط سنعيد المواضع.
+            }
+            
+            // تأثير إضافي: "تشظي الحقيقة" - بعد تفكك عالٍ نحدث قفزات كمية نادرة
+            if (progress > 0.8 && Math.random() < 0.03 * progress) {
+                for (let i = 0; i < particles.length * 0.02; i++) {
+                    const idx = Math.floor(Math.random() * particles.length);
+                    if (particles[idx]) {
+                        // قفزة كمية: إزاحة كبيرة
+                        particles[idx].x += (Math.random() - 0.5) * W * 0.3;
+                        particles[idx].y += (Math.random() - 0.5) * H * 0.3;
+                        particles[idx].vx += (Math.random() - 0.5) * 150;
+                        particles[idx].vy += (Math.random() - 0.5) * 150;
+                    }
+                }
+            }
+        }
+        
+        // رسم خلفية متغيرة سايكدلية (تموج الزمكان)
+        function drawPsychedelicBackground(time) {
+            const grad = ctx.createLinearGradient(0, 0, W, H);
+            const hue1 = (time * 25) % 360;
+            const hue2 = (hue1 + 180) % 360;
+            grad.addColorStop(0, `hsl(${hue1}, 100%, 8%)`);
+            grad.addColorStop(0.5, `hsl(${(hue1 + 60) % 360}, 90%, 5%)`);
+            grad.addColorStop(1, `hsl(${hue2}, 100%, 10%)`);
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, W, H);
+            
+            // إضافة ضباب كوني مهلوس (دوامات)
+            ctx.globalCompositeOperation = 'lighter';
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                const radX = W * (0.4 + Math.sin(time * 0.7 + i) * 0.1);
+                const radY = H * (0.4 + Math.cos(time * 0.5 + i) * 0.1);
+                const grdRad = ctx.createRadialGradient(center.x + Math.sin(time * 0.9) * 40, center.y + Math.cos(time * 0.8) * 40, 10, center.x, center.y, radX);
+                grdRad.addColorStop(0, `hsla(${(time * 50 + i * 120) % 360}, 100%, 60%, 0.1)`);
+                grdRad.addColorStop(1, `hsla(${(time * 30 + 180) % 360}, 80%, 20%, 0)`);
+                ctx.fillStyle = grdRad;
+                ctx.fillRect(0, 0, W, H);
+            }
+            ctx.globalCompositeOperation = 'source-over';
+        }
+        
+        // رسم الجسيمات بألوان متغيرة ووهج سايكدلي
+        function drawParticles(time, progress) {
+            if (!particles) return;
+            // نستخدم تأثير توهج (glow) وجسيمات متلألئة
+            ctx.shadowBlur = 9;
+            ctx.shadowColor = "magenta";
+            
+            for (let p of particles) {
+                // لون ديناميكي: يعتمد على الزمن + التفكيك + اللون الأساسي
+                let dynamicHue = (p.hueBase + time * 55 + progress * 260) % 360;
+                // التشبع يزداد حدة مع التفكيك
+                let dynamicSat = Math.min(98, p.sat + progress * 25);
+                let dynamicLight = 55 + Math.sin(time * 12 + p.angleSeed * 8) * 20 + progress * 15;
+                const color = `hsl(${dynamicHue}, ${dynamicSat}%, ${dynamicLight}%)`;
+                ctx.fillStyle = color;
+                
+                // حجم الجسيم يتغير مع التفكيك والموجات النفسية
+                let sizeMulti = 1 + Math.sin(time * 15 + p.chaosOffset) * 0.5 + progress * 0.9;
+                let finalSize = Math.max(1.2, p.size * sizeMulti * (progress > 0.7 ? (1 + (progress-0.7)*2) : 1));
+                
+                ctx.beginPath();
+                // شكل الجسيمات يتغير: عند تفكيك عالي تتحول لمربعات صغيرة (تشرذم)
+                if (progress > 0.6 && (Math.floor(time * 8) % 3 === 0)) {
+                    // مربعات مهلهلة
+                    ctx.fillRect(p.x - finalSize/1.5, p.y - finalSize/1.5, finalSize*1.2, finalSize*1.2);
+                } else {
+                    ctx.arc(p.x, p.y, finalSize * 0.85, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                // إضافة بريق للجسيمات
+                if (progress > 0.3) {
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = `hsl(${dynamicHue}, 100%, 70%)`;
+                } else {
+                    ctx.shadowBlur = 5;
+                }
+            }
+            ctx.shadowBlur = 0;
+        }
+        
+        // تأثيرات بصرية إضافية : تشويش وتشويه بصري (تفكيك الإدراك)
+        function addVisualGlitch(progress, time) {
+            if (progress > 0.35 && Math.random() < 0.08 * progress) {
+                const glitchWidth = W * 0.1 * Math.random();
+                const glitchX = Math.random() * (W - glitchWidth);
+                const glitchHeight = H * 0.05;
+                const glitchY = Math.random() * H;
+                const imageData = ctx.getImageData(glitchX, glitchY, glitchWidth, glitchHeight);
+                const offsetX = (Math.random() - 0.5) * 45 * progress;
+                ctx.putImageData(imageData, glitchX + offsetX, glitchY + (Math.random() - 0.5) * 20);
+            }
+            // تقطيع اللوني (color shift)
+            if (progress > 0.5) {
+                ctx.globalCompositeOperation = 'overlay';
+                ctx.fillStyle = `rgba(${Math.sin(time)*100+100}, ${Math.cos(time*1.3)*100+100}, ${Math.sin(time*1.8)*150+100}, 0.08)`;
+                ctx.fillRect(0, 0, W, H);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+        }
+        
+        // رسم نصوص عربية تتفكك رمزياً (إضافة فلسفية)
+        function drawDeconstructingText(progress, time) {
+            if (progress > 0.2) {
+                ctx.font = `bold ${28 + Math.sin(time * 8) * 6}px 'Noto Sans Arabic', 'Cairo'`;
+                ctx.shadowBlur = 0;
+                ctx.textAlign = 'center';
+                const texts = ["الواقع", "الحقيقة", "الوجود", "المادة", "الكون"];
+                const alpha = 0.7 - progress * 0.6;
+                if (alpha > 0) {
+                    for (let i = 0; i < texts.length; i++) {
+                        const offsetX = Math.sin(time * 2.3 + i) * 20 * progress;
+                        const offsetY = Math.cos(time * 2.1 + i) * 20 * progress;
+                        const rot = Math.sin(time * 1.8 + i) * 0.5 * progress;
+                        ctx.save();
+                        ctx.translate(center.x + offsetX * (i+1), center.y - 120 + offsetY + Math.sin(time*3)*15*progress);
+                        ctx.rotate(rot);
+                        ctx.fillStyle = `hsla(${(time*70 + i*120) % 360}, 85%, 65%, ${alpha * 0.9})`;
+                        ctx.shadowColor = "cyan";
+                        ctx.shadowBlur = 12;
+                        ctx.fillText(texts[i], 0, 0);
+                        ctx.restore();
+                    }
+                }
+            }
+            // شعار التفكيك النهائي
+            if (progress > 0.85) {
+                ctx.font = `bold 42px 'Noto Sans Arabic'`;
+                ctx.textAlign = 'center';
+                ctx.shadowBlur = 18;
+                ctx.fillStyle = `rgba(255, 0, 255, ${0.5 + Math.sin(time*10)*0.2})`;
+                ctx.fillText("❀ لَاشَيْءَ سِوَى التَّفَكُّك ❀", W/2, H - 60);
+            }
+        }
+        
+        // حلقة الرسم الأساسية (سايكدلية مطلقة)
+        let animationId = null;
+        let lastFrameTime = 0;
+        
+        function animateRealityDeconstruction(nowMs) {
+            if (!canvas || !ctx) return;
+            requestAnimationFrame(animateRealityDeconstruction);
+            
+            const now = performance.now();
+            let delta = Math.min(0.033, (now - lastFrameTime) / 1000);
+            if (delta <= 0) { lastFrameTime = now; return; }
+            lastFrameTime = now;
+            
+            // تحديث الزمن السايكدلي
+            psychedelicTime += delta * 1.6;
+            
+            // تأثير الماوس على سرعة التفكيك: الموقع الأفقي يتحكم في تسريع التمزق
+            let mouseSpeedFactor = (mouseXNorm * 2.2) + 0.2;  // بين 0.2 و 2.4
+            let speed = autoDeconstructionSpeed * mouseSpeedFactor * (1 + deconstructionProgress * 0.5);
+            targetProgress = Math.min(1.0, deconstructionProgress + delta * speed);
+            // إضافة تأثير: إذا كان المستخدم يحرك الماوس بسرعة يمكن أن يزيد التفكيك (يوجد متغير mouseXNorm بالفعل)
+            deconstructionProgress = targetProgress;
+            
+            // عند اكتمال التفكيك بنسبة 100% يتم إعادة بناء الواقع من جديد (دورة أبدية)
+            if (deconstructionProgress >= 1.0) {
+                deconstructionProgress = 0.0;
+                targetProgress = 0.0;
+                resetReality();
+                updateProgressBar();
+            }
+            
+            updateProgressBar();
+            
+            // 1. تطبيق قوى التفكيك على الجسيمات
+            if (particles && particles.length) {
+                applyDeconstructionForces(delta, deconstructionProgress);
+            }
+            
+            // 2. رسم كل شيء بخلفية سحرية متلاشية
+            drawPsychedelicBackground(psychedelicTime);
+            
+            // 3. الرسم الرئيسي للجسيمات بعد تفكيكها
+            drawParticles(psychedelicTime, deconstructionProgress);
+            
+            // 4. طبقات تشويه وانهيار بصري
+            addVisualGlitch(deconstructionProgress, psychedelicTime);
+            
+            // 5. نصوص عربية متحللة
+            drawDeconstructingText(deconstructionProgress, psychedelicTime);
+            
+            // تأثير نهائي: وميض المطلق
+            if (deconstructionProgress > 0.95) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.sin(psychedelicTime * 25) * 0.2 + 0.1})`;
+                ctx.fillRect(0, 0, W, H);
+            }
+        }
+        
+        // ---- أحداث الماوس والتفاعل ----
+        function onMouseMove(e) {
+            // نسبة X تتحكم في سرعة انهيار الواقع (موضوعياً)
+            const rect = canvas.getBoundingClientRect();
+            let mouseX = e.clientX - rect.left;
+            mouseXNorm = Math.min(1.0, Math.max(0.0, mouseX / W));
+            // أيضاً إضافة تأثير سايكدلي: حركة الماوس تخلق اضطراباً مباشراً
+            if (particles && deconstructionProgress > 0.2) {
+                const forceX = (mouseXNorm - 0.5) * 180 * deconstructionProgress;
+                const forceY = ((e.clientY - rect.top) / H - 0.5) * 180 * deconstructionProgress;
+                for (let i = 0; i < Math.min(150, particles.length); i++) {
+                    const idx = Math.floor(Math.random() * particles.length);
+                    particles[idx].vx += (Math.random() - 0.5) * forceX;
+                    particles[idx].vy += (Math.random() - 0.5) * forceY;
+                }
+            }
+        }
+        
+        function initEventListeners() {
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                resetReality();
+            });
+            canvas.addEventListener('mousemove', onMouseMove);
+            const resetBtn = document.getElementById('resetRealityBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    resetReality();
+                    deconstructionProgress = 0;
+                    targetProgress = 0;
+                    updateProgressBar();
+                });
+            }
+        }
+        
+        // بدء الكون ...
+        function startDeconstruction() {
+            resizeCanvas();
+            particles = initParticles();
+            initEventListeners();
+            lastFrameTime = performance.now();
+            animateRealityDeconstruction(lastFrameTime);
+        }
+        
+        startDeconstruction();
+    })();
+</script>
+</body>
+</html>
