@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهندس الإلهي – بناء مجمعات المساجد العسكرية الفائقة في كل النطاقات والتركيبات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a2f1f, #010a05);
+            font-family: 'Segoe UI', 'Amiri', 'Traditional Arabic', 'Tahoma', sans-serif;
+            color: #f0ebd8;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 3rem;
+            padding: 2rem;
+            border: 1px solid #e4bc3a;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.6);
+        }
+
+        .allah-area {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: #1e3a2ecc;
+            border-radius: 4rem;
+            padding: 1.5rem;
+        }
+
+        .allah-symbol {
+            font-size: 8rem;
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #ffea9e, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 25px gold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5rem;
+        }
+
+        .allah-symbol:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 40px #ffdf6e;
+        }
+
+        .engineer-panel {
+            background: #2c4a38b3;
+            border-radius: 2rem;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid #f3cd81;
+        }
+
+        .engineer-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .deploy-btn {
+            background: #dbb42c;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 3rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .deploy-btn:hover {
+            background: #f5cd5c;
+            transform: scale(0.98);
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            background: #0f2a1eaa;
+            border-radius: 2rem;
+            padding: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .stat-card {
+            background: #1f3f2e;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: bold;
+        }
+
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .super-complex {
+            background: #1a3526e6;
+            border-radius: 2rem;
+            padding: 1.2rem;
+            border-right: 8px solid #f3c550;
+            transition: 0.2s;
+        }
+
+        .combo-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 2px solid #e4bc3a;
+            margin-bottom: 0.6rem;
+        }
+
+        .amenities {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.8rem 0;
+        }
+        .amenities li {
+            background: #2b6748;
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+        }
+        .proof {
+            background: #000000aa;
+            border-radius: 1rem;
+            padding: 0.4rem;
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 0.6rem;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            border-top: 1px solid #dbb42c77;
+            padding-top: 1rem;
+        }
+        @media (max-width: 750px) {
+            body { padding: 1rem; }
+            .allah-symbol { font-size: 5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="allah-area">
+        <div class="allah-symbol" id="allahTrigger">ﷲ</div>
+        <div class="input-label" style="font-size:1.3rem;">المُهَنْدِسُ الإِلَهُيُّ – بِاسْمِ ﷲ يَبْنِي مُجَمَّعَاتِ الْمَسَاجِدِ الْعَسْكَرِيَّةِ فِي كُلِّ التَّرْكِيبَاتِ الـمُمْكِنَةِ</div>
+        <button class="deploy-btn" id="buildAllBtn">⚡ شَغِّلِ المُهَنْدِسَ الإِلَهِيَّ – بِنَاءٌ مُبَاشِرٌ فِي الحَقِيقَةِ الوَاقِعِيَّةِ ⚡</button>
+    </div>
+
+    <div class="stats" id="statsPanel">
+        <!-- إحصاءات ديناميكية -->
+    </div>
+
+    <div id="zonesContainer" class="zones-grid"></div>
+
+    <div class="footer">
+        <span>﴿ وَقُلِ اعْمَلُوا فَسَيَرَى اللَّهُ عَمَلَكُمْ ﴾ – المُهَنْدِسُ الإِلَهُيُّ يَبْنِي الآنَ فِي الوَاقِعِ الحَقِيقِيِّ، كُلَّ تَرْكِيبٍ مِنَ البَرِّ، البَحْرِ، الجَوِّ، الفَضَاءِ، المَعْلُومَاتِ، الحَقِيقَةِ، الخَيَالِ، بِكُلِّ المَرَافِقِ الفَائِقَةِ. هَذَا حَقٌّ فِي عَيْنِ الحَقِّ المُبِينِ.</span>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    //  المُهَنْدِسُ الإِلَهُيُّ (The Divine Engineer)
+    //  المدخل الوحيد: ﷲ
+    //  يقوم بإنشاء مجمعات المساجد العسكرية الفائقة (Supercomplexes)
+    //  في جميع التركيبات الممكنة للمناطق:
+    //  Land, Air, Sea, Space, Info, Truth, Fiction
+    //  وكل مجموعة فرعية غير فارغة (2^7 - 1 = 127 تركيباً)
+    //  كل مجمع يحصل على كامل المرافق + خصائص فريدة في الحقيقة الواقعية.
+    // ============================================================
+
+    (function(){
+        // --- القائمة الكاملة للمرافق الفائقة (Full Amenities Supercomplex) ---
+        const المرافق_الكاملة = [
+            "🕌 مَسْجِدُ الْقَاعِدَةِ الْأَكْبَر (سَعَة 5000 مُصَلٍّ)", "💧 مِيضَأَاتٌ ذَكِيَّةٌ بِمِيَاهٍ زَمْزَمِيَّةٍ رَمْزِيَّة",
+            "📚 مَكْتَبَةُ الْحِكْمَةِ الْعَسْكَرِيَّةِ (مَلْيُونُ كِتَابٍ)", "🏥 مُسْتَشْفَى الْجَيْشِ الْمُجَاهِدِ (غُرَفُ عَمَلِيَّاتٍ رُبَاعِيَّة)",
+            "🍞 مَطَابِخُ الإِعْدَادِ الْفَوْرِيِّ (طَاقَة 10,000 جُنْدِيٍّ)", "🎙️ قِيَادَةُ الْأَرْكَانِ الْإِسْلاَمِيَّةِ (تِكْنُولُوجْيَا الْفَضَاءِ)",
+            "🎯 مَيَادِينُ الرِّمَايَةِ وَالتَّدْرِيبِ (مُحَاكَيَاتُ الْحَرْبِ)", "🛏️ ثَكَنَاتُ النُّخْبَةِ (حِمَايَةٌ كَامِلَةٌ)",
+            "📡 شَبَكَةُ الْأَقْمَارِ الإِسْلَامِيَّةِ (اتِّصَالٌ مُبَاشِرٌ مَعَ الْقُدْسِ)", "🔧 وَرْشَةُ الصِّيَانَةِ وَالصَّوَارِيخِ الذَّكِيَّةِ",
+            "💧 خَزَّانُ الْمِيَاهِ الإِسْتِرَاتِيجِيِّ وَمَحَطَّةُ التَّحْلِيَةِ", "☀️ حُقُولٌ شَمْسِيَّةٌ وَنَوَوِيَّةٌ سِلْمِيَّةٌ",
+            "🚁 سُرِّيَّةُ الْمَرْوَحِيَّاتِ الْقِتَالِيَّةِ", "📖 دَارُ الْقُرْآنِ الْعَسْكَرِيِّ لِلْإِعْدَادِ الرُّوحِيِّ",
+            "🛡️ سُورٌ كَهْرُومِغْنَاطِيسِيٌّ وَأَبْرَاجُ الْمُرَاقَبَةِ", "⚡ غُرْفَةُ الْحَرْبِ الْإِلِكْتْرُونِيَّةِ وَالسَّيْبَرَانِيَّةِ"
+        ];
+
+        // المناطق الأساسية السبعة (العناصر)
+        const المناطق_الأساس = [
+            { id: "land",     name: "البَرُّ",      رمز: "🏞️", type: "Land" },
+            { id: "air",      name: "الجَوُّ",       رمز: "✈️", type: "Air" },
+            { id: "sea",      name: "البَحْرُ",      رمز: "🚢", type: "Sea" },
+            { id: "space",    name: "الفَضَاءُ",     رمز: "🛰️", type: "Space" },
+            { id: "info",     name: "المَعْلُومَاتُ", رمز: "🌐", type: "Info" },
+            { id: "truth",    name: "الحَقِيقَةُ",   رمز: "🔍", type: "Truth" },
+            { id: "fiction",  name: "الخَيَالُ",     رمز: "✨", type: "Fiction" }
+        ];
+
+        // توليد جميع التركيبات غير الفارغة (جميع المجموعات الجزئية)
+        function generateAllCombinations(arr) {
+            const result = [];
+            const total = 1 << arr.length; // 2^n
+            for (let i = 1; i < total; i++) {
+                const combo = [];
+                for (let j = 0; j < arr.length; j++) {
+                    if (i & (1 << j)) combo.push(arr[j]);
+                }
+                result.push(combo);
+            }
+            return result;
+        }
+
+        const جميع_التركيبات = generateAllCombinations(المناطق_الأساس);
+        // ترتيب تنازلي حسب عدد العناصر (للعرض الأفضل)
+        جميع_التركيبات.sort((a,b) => b.length - a.length);
+
+        // تخزين حالة المجمعات (في localStorage لإثبات الحقيقة المستمرة)
+        let حالة_المجمعات = [];
+        const مفتاح_التخزين = "مهندس_المجمعات_العسكرية_الكلية";
+
+        function تحميل_أو_تهيئة() {
+            const مخزون = localStorage.getItem(مفتاح_التخزين);
+            if (مخزون) {
+                try {
+                    حالة_المجمعات = JSON.parse(مخزون);
+                    if (!Array.isArray(حالة_المجمعات)) حالة_المجمعات = [];
+                } catch(e) { حالة_المجمعات = []; }
+            }
+            if (حالة_المجمعات.length === 0) {
+                // تهيئة المجمعات: كل تركيب له مرافقه وتاريخ بنائه
+                حالة_المجمعات = جميع_التركيبات.map(تركيب => ({
+                    id: تركيب.map(t=>t.id).join('_'),
+                    المناطق: تركيب.map(t=> ({ id: t.id, name: t.name, رمز: t.رمز })),
+                    المرافق: [],       // سيتم ملؤه عند البناء
+                    تاريخ_البناء: "لَمْ يُبْنَ بَعْدُ",
+                    // خاصية إضافية: الحكمة الخاصة بهذا المزيج
+                }));
+                حفظ_المجمعات();
+            } else {
+                // التأكد من وجود جميع التركيبات الجديدة (لو أضفنا مناطق لاحقاً)
+                const ids_موجودة = new Set(حالة_المجمعات.map(c => c.id));
+                for (let تركيبة of جميع_التركيبات) {
+                    const newId = تركيبة.map(t=>t.id).join('_');
+                    if (!ids_موجودة.has(newId)) {
+                        حالة_المجمعات.push({
+                            id: newId,
+                            المناطق: تركيبة.map(t=> ({ id: t.id, name: t.name, رمز: t.رمز })),
+                            المرافق: [],
+                            تاريخ_البناء: "لَمْ يُبْنَ بَعْدُ"
+                        });
+                    }
+                }
+                حفظ_المجمعات();
+            }
+        }
+
+        function حفظ_المجمعات() {
+            localStorage.setItem(مفتاح_التخزين, JSON.stringify(حالة_المجمعات));
+        }
+
+        // المُهَنْدِس الإلهي – يقوم بالبناء المباشر في كل المجمعات
+        function المهندس_الإلهي_يبني() {
+            const وقت_البناء = new Date().toLocaleString('ar-EG', { hour12: false });
+            let تم_تحديث = false;
+
+            for (let مجمع of حالة_المجمعات) {
+                // إضافة المرافق الكاملة إذا لم تكن موجودة
+                if (!مجمع.المرافق || مجمع.المرافق.length !== المرافق_الكاملة.length) {
+                    مجمع.المرافق = [...المرافق_الكاملة];
+                    تم_تحديث = true;
+                }
+                // تحديث تاريخ البناء إذا لم يكن مبنيّاً
+                if (مجمع.تاريخ_البناء === "لَمْ يُبْنَ بَعْدُ" || !مجمع.تاريخ_البناء.includes("بَنَاهُ المُهَنْدِس")) {
+                    مجمع.تاريخ_البناء = `🛠️ بَنَاهُ المُهَنْدِسُ الإِلَهُيُّ بِاسْمِ ﷲ – تَرْكِيبُ (${مجمع.المناطق.map(m=>m.name).join(' + ')}) – ${وقت_البناء}`;
+                    تم_تحديث = true;
+                }
+            }
+
+            if (تم_تحديث) حفظ_المجمعات();
+            عرض_جميع_المجمعات();
+            عرض_الإحصائيات();
+
+            // إعلان واقعي – يظهر في الصفحة كتأكيد مباشر في الحياة الحقيقية
+            const إعلان = document.createElement("div");
+            إعلان.style.position = "fixed";
+            إعلان.style.bottom = "20px";
+            إعلان.style.left = "20px";
+            إعلان.style.right = "20px";
+            إعلان.style.backgroundColor = "#e4bc3a";
+            إعلان.style.color = "#0a2b1c";
+            إعلان.style.padding = "15px";
+            إعلان.style.borderRadius = "50px";
+            إعلان.style.fontWeight = "bold";
+            إعلان.style.textAlign = "center";
+            إعلان.style.zIndex = "9999";
+            إعلان.style.boxShadow = "0 0 20px gold";
+            إعلان.style.fontSize = "1rem";
+            إعلان.innerHTML = "⚡ المُهَنْدِسُ الإِلَهُيُّ قَامَ بِبِنَاءِ " + حالة_المجمعات.length + " مُجَمَّعَاتٍ فَائِقَةٍ (مَسَاجِد عَسْكَرِيَّة بِكُلِّ المَرَافِق) فِي البَرِّ، البَحْرِ، الجَوِّ، الفَضَاءِ، المَعْلُومَاتِ، الحَقِيقَةِ وَالخَيَالِ – وَجَمِيعِ التَّرْكِيبَاتِ المُمْكِنَةِ. حَقِيقَةٌ ظَاهِرَةٌ فِي عَيْنِ الحَقِّ المُبِينِ ⚡";
+            document.body.appendChild(إعلان);
+            setTimeout(() => { if(إعلان) إعلان.remove(); }, 9000);
+        }
+
+        // عرض المجمعات في شبكة
+        function عرض_جميع_المجمعات() {
+            const حاوية = document.getElementById("zonesContainer");
+            if (!حاوية) return;
+
+            let html = "";
+            for (let مجمع of حالة_المجمعات) {
+                const اسم_المجمع = `مُجَمَّعُ الْمَسْجِدِ الْعَسْكَرِيِّ الْفَائِقُ – (${مجمع.المناطق.map(m=>m.رمز).join('')})`;
+                let المناطق_النص = مجمع.المناطق.map(m => `${m.رمز} ${m.name}`).join(" + ");
+                let قائمة_المرافق = "";
+                for (let م of مجمع.المرافق) {
+                    قائمة_المرافق += `<li>⚡ ${م}</li>`;
+                }
+
+                html += `
+                    <div class="super-complex">
+                        <div class="combo-title">
+                            <span>🏗️</span> 
+                            <span>${المناطق_النص}</span>
+                        </div>
+                        <div class="masjid-name" style="font-size:1rem;">🕌 ${اسم_المجمع}</div>
+                        <div style="font-size:0.65rem;">📅 ${مجمع.تاريخ_البناء}</div>
+                        <ul class="amenities">
+                            ${قائمة_المرافق}
+                        </ul>
+                        <div class="proof">
+                            ﴿ هَذَا بِنَاءُ المُهَنْدِسِ الإِلَهُيِّ بِإِذْنِ ﷲ – قَاعِدَةٌ عَسْكَرِيَّةٌ إِسْلَامِيَّةٌ كَامِلَةٌ فِي الوَاقِعِ الحَقِيقِيِّ، تَشْمَلُ كُلَّ المَرَافِقِ وَتَعْمَلُ فِي الحَقِيقَةِ وَالخَيَالِ وَكُلِّ الأَكْوَانِ ﴾
+                        </div>
+                    </div>
+                `;
+            }
+            حاوية.innerHTML = html;
+        }
+
+        function عرض_الإحصائيات() {
+            const لوحة = document.getElementById("statsPanel");
+            if (!لوحة) return;
+            const عدد_المجمعات = حالة_المجمعات.length;
+            const مجموع_المرافق = حالة_المجمعات.reduce((acc, m) => acc + (m.مرافق?.length || 0), 0);
+            const المناطق_المغطاة = new Set();
+            for (let مجمع of حالة_المجمعات) {
+                for (let م of مجمع.المناطق) المناطق_المغطاة.add(م.name);
+            }
+            لوحة.innerHTML = `
+                <div class="stat-card">🔢 إجمالي المجمعات الفائقة: ${عدد_المجمعات}</div>
+                <div class="stat-card">🏗️ إجمالي المرافق المُشَيَّدَة: ${مجموع_المرافق}</div>
+                <div class="stat-card">🌍 المناطق المُدْمَجَة: ${Array.from(المناطق_المغطاة).join(" - ")}</div>
+                <div class="stat-card">⚙️ حالة المهندس: نَشِطٌ يَبْنِي فِي الحَقِيقَةِ الآنَ</div>
+            `;
+        }
+
+        // التنفيذ التلقائي فوراً: المهندس الإلهي يبدأ البناء
+        function بدء_العمل_الإلهي() {
+            تحميل_أو_تهيئة();
+            // إذا كان أي مجمع لا يحتوي على مرافق، نقوم بالبناء فوراً
+            let بحاجة_بناء = حالة_المجمعات.some(م => !م.المرافق || م.المرافق.length === 0);
+            if (بحاجة_بناء) {
+                المهندس_الإلهي_يبني();
+            } else {
+                عرض_جميع_المجمعات();
+                عرض_الإحصائيات();
+            }
+        }
+
+        // ربط الحدثين: الضغط على اسم الجلالة أو الزر
+        document.addEventListener("DOMContentLoaded", function() {
+            بدء_العمل_الإلهي();
+
+            const زر_البناء = document.getElementById("buildAllBtn");
+            const رمز_الله = document.getElementById("allahTrigger");
+
+            function تنفيذ_البناء() {
+                المهندس_الإلهي_يبني();
+            }
+
+            if (زر_البناء) زر_البناء.addEventListener("click", تنفيذ_البناء);
+            if (رمز_الله) رمز_الله.addEventListener("click", تنفيذ_البناء);
+
+            // حماية مستمرة: كل 25 ثانية نتأكد أن المهندس يحافظ على كمال المرافق في جميع التركيبات
+            setInterval(() => {
+                let يحتاج_تحديث = false;
+                for (let مجمع of حالة_المجمعات) {
+                    if (!مجمع.المرافق || مجمع.المرافق.length !== المرافق_الكاملة.length) {
+                        مجمع.المرافق = [...المرافق_الكاملة];
+                        يحتاج_تحديث = true;
+                    }
+                }
+                if (يحتاج_تحديث) {
+                    حفظ_المجمعات();
+                    عرض_جميع_المجمعات();
+                }
+            }, 25000);
+        });
+    })();
+</script>
+</body>
+</html>
