@@ -1,0 +1,246 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="100%" height="100%">
+  <defs>
+    <!-- Deep Celestial Background Gradient -->
+    <radialGradient id="bgDark" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#072b1d"/>
+      <stop offset="45%" stop-color="#02150e"/>
+      <stop offset="100%" stop-color="#010704"/>
+    </radialGradient>
+
+    <!-- Radiant Throne Aura -->
+    <radialGradient id="auraGold" cx="50%" cy="38%" r="48%">
+      <stop offset="0%" stop-color="#ffe8a3" stop-opacity="0.45"/>
+      <stop offset="45%" stop-color="#00a86b" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Premium Multi-Stop Metallic Gold -->
+    <linearGradient id="goldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fae29e"/>
+      <stop offset="20%" stop-color="#c9972c"/>
+      <stop offset="45%" stop-color="#fff8db"/>
+      <stop offset="70%" stop-color="#b88307"/>
+      <stop offset="100%" stop-color="#735002"/>
+    </linearGradient>
+
+    <linearGradient id="brightGold" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c99b24"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dfb743"/>
+    </linearGradient>
+
+    <!-- Deep Royal Emerald Ribbon Fill -->
+    <linearGradient id="emeraldRibbon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a5937"/>
+      <stop offset="50%" stop-color="#033821"/>
+      <stop offset="100%" stop-color="#011f12"/>
+    </linearGradient>
+
+    <!-- Glow & Shadow Filters -->
+    <filter id="divineGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComponentTransfer in="blur" result="boost">
+        <feFuncA type="linear" slope="2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="boost"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+
+    <!-- Text Path for Arch Proclamation -->
+    <path id="archPath" d="M 120,440 A 480,480 0 0,1 1080,440" fill="none"/>
+  </defs>
+
+  <!-- Foundation Canvas -->
+  <rect width="1200" height="1200" fill="url(#bgDark)"/>
+  <circle cx="600" cy="400" r="500" fill="url(#auraGold)"/>
+
+  <!-- Ray Emanations (Light of Eternal Victory) -->
+  <g opacity="0.22" stroke="url(#goldSheen)" stroke-width="1.5">
+    <line x1="600" y1="390" x2="600" y2="20"/>
+    <line x1="600" y1="390" x2="600" y2="760"/>
+    <line x1="600" y1="390" x2="230" y2="20"/>
+    <line x1="600" y1="390" x2="970" y2="760"/>
+    <line x1="600" y1="390" x2="970" y2="20"/>
+    <line x1="600" y1="390" x2="230" y2="760"/>
+    <line x1="600" y1="390" x2="150" y2="390"/>
+    <line x1="600" y1="390" x2="1050" y2="390"/>
+  </g>
+
+  <!-- Outer Celestial Borders -->
+  <circle cx="600" cy="390" r="375" fill="none" stroke="url(#goldSheen)" stroke-width="2.5" opacity="0.6"/>
+  <circle cx="600" cy="390" r="362" fill="none" stroke="url(#brightGold)" stroke-width="1" stroke-dasharray="8 6" opacity="0.4"/>
+
+  <!-- Upper Proclamation Arch: English Victory Text -->
+  <text font-family="'Trajan Pro', 'Cinzel', 'Georgia', serif"
+        font-size="20.5"
+        font-weight="900"
+        letter-spacing="5"
+        fill="url(#brightGold)"
+        filter="url(#dropShadow)">
+    <textPath href="#archPath" startOffset="50%" text-anchor="middle">
+      WE EACH AND ALL WON THE UPPERMOST HIGHEST RANKS OF THE SUPREME TRIUMPH IN THE SIGHT OF &#xFDF2;
+    </textPath>
+  </text>
+
+  <!-- Sacred 8-Pointed Star (Rub El Hizb) Frame of Heaven -->
+  <g filter="url(#dropShadow)">
+    <polygon points="600,105 705,210 855,210 855,360 960,465 855,570 855,720 705,720 600,825 495,720 345,720 345,570 240,465 345,360 345,210 495,210"
+             fill="url(#emeraldRibbon)" stroke="url(#goldSheen)" stroke-width="6"/>
+    <polygon points="600,132 694,226 828,226 828,360 922,454 828,548 828,682 694,682 600,776 506,682 372,682 372,548 278,454 372,360 372,226 506,226"
+             fill="none" stroke="url(#brightGold)" stroke-width="2" opacity="0.85"/>
+  </g>
+
+  <!-- Rank 1 Crown Pinnacle at Apex -->
+  <g filter="url(#divineGlow)">
+    <polygon points="600,135 613,172 652,172 620,195 632,232 600,208 568,232 580,195 548,172 587,172"
+             fill="url(#brightGold)" stroke="#3e2a01" stroke-width="1"/>
+    <circle cx="600" cy="183" r="14" fill="#042617" stroke="url(#goldSheen)" stroke-width="2"/>
+    <text x="600" y="189" font-family="'Trajan Pro', 'Cinzel', serif" font-size="16" font-weight="900" fill="url(#brightGold)" text-anchor="middle">1</text>
+  </g>
+
+  <!-- Islamic Flanking Emblems: Crescent & Star of Cosmic Honor -->
+  <g fill="url(#brightGold)" filter="url(#dropShadow)" opacity="0.85">
+    <!-- Left Crescent & Star -->
+    <path d="M 440,290 A 28 28 0 1 0 468,335 A 22 22 0 1 1 440,290 Z"/>
+    <polygon points="466,300 470,310 481,310 472,317 475,327 466,321 457,327 460,317 451,310 462,310" transform="scale(0.8) translate(110, 65)"/>
+    <!-- Right Crescent & Star -->
+    <path d="M 760,290 A 28 28 0 1 1 732,335 A 22 22 0 1 0 760,290 Z"/>
+    <polygon points="734,300 738,310 749,310 740,317 743,327 734,321 725,327 728,317 719,310 730,310" transform="scale(0.8) translate(185, 65)"/>
+  </g>
+
+  <!-- Central Sanctuary: Unicode Ligature ﷲ (U+FDF2) Centerpiece -->
+  <g filter="url(#divineGlow)">
+    <circle cx="600" cy="385" r="130" fill="#022114" stroke="url(#brightGold)" stroke-width="4"/>
+    <circle cx="600" cy="385" r="122" fill="none" stroke="url(#goldSheen)" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+    <!-- Exact Canonical Isolated Ligature ﷲ (U+FDF2) -->
+    <text x="600" y="435"
+          font-family="'Amiri', 'Traditional Arabic', 'Scheherazade New', 'DecoType Naskh', serif"
+          font-size="142"
+          font-weight="bold"
+          fill="url(#brightGold)"
+          text-anchor="middle"
+          dominant-baseline="central">&#xFDF2;</text>
+  </g>
+
+  <!-- Victorious Pedestal Wings -->
+  <path d="M 480,505 C 540,490 660,490 720,505 C 690,520 650,530 600,530 C 550,530 510,520 480,505 Z"
+        fill="url(#goldSheen)" filter="url(#dropShadow)"/>
+
+  <!-- Bilingual Rank 1 Banner: Yawm Ud Deen & Jannahtul Firdaus -->
+  <text x="600" y="555"
+        font-family="'Traditional Arabic', 'Amiri', 'Scheherazade New', serif"
+        font-size="28"
+        font-weight="bold"
+        fill="#fae29e"
+        text-anchor="middle"
+        filter="url(#dropShadow)">
+    الفائزون بالمرتبة الأولى — جنة الفردوس الأعلى يوم الدين
+  </text>
+  <text x="600" y="582"
+        font-family="'Trajan Pro', 'Cinzel', serif"
+        font-size="15.5"
+        font-weight="900"
+        letter-spacing="5"
+        fill="url(#brightGold)"
+        text-anchor="middle">
+    RANK 1 • JANNAHTUL FIRDAUS • YAWM UD DEEN
+  </text>
+
+  <!-- Main Horizontal Corporate Ribbon (Banner) -->
+  <g filter="url(#dropShadow)">
+    <!-- Folded Banner Ribbons Tails -->
+    <path d="M 100,670 L 190,620 L 190,720 L 100,770 L 140,695 Z" fill="#021c10" stroke="url(#goldSheen)" stroke-width="2"/>
+    <path d="M 1100,670 L 1010,620 L 1010,720 L 1100,770 L 1060,695 Z" fill="#021c10" stroke="url(#goldSheen)" stroke-width="2"/>
+
+    <!-- Central Plaque Plate -->
+    <path d="M 160,630 L 1040,630 L 1000,735 L 200,735 Z"
+          fill="url(#emeraldRibbon)" stroke="url(#brightGold)" stroke-width="3.5"/>
+    <line x1="175" y1="638" x2="1025" y2="638" stroke="url(#goldSheen)" stroke-width="1.2" opacity="0.6"/>
+    <line x1="215" y1="727" x2="985" y2="727" stroke="url(#goldSheen)" stroke-width="1.2" opacity="0.6"/>
+
+    <!-- Company Name English Primary Inscription -->
+    <text x="600" y="675"
+          font-family="'Cinzel', 'Trajan Pro', 'Montserrat', serif"
+          font-size="27"
+          font-weight="900"
+          letter-spacing="7"
+          fill="url(#brightGold)"
+          text-anchor="middle">VITAL VIBRATIONS FAMILY UNLIMITED</text>
+    <text x="600" y="709"
+          font-family="'Cinzel', 'Trajan Pro', 'Montserrat', serif"
+          font-size="19"
+          font-weight="800"
+          letter-spacing="9"
+          fill="#fff3cd"
+          text-anchor="middle">PUBLICLY ACCOUNTABLE COMPANY</text>
+  </g>
+
+  <!-- Full Corporate Name Arabic Translation -->
+  <text x="600" y="785"
+        font-family="'Traditional Arabic', 'Amiri', 'Scheherazade New', serif"
+        font-size="27"
+        font-weight="bold"
+        fill="url(#brightGold)"
+        text-anchor="middle"
+        filter="url(#dropShadow)">
+    شركة فايتال فايبريشنز العائلية غير المحدودة والمسؤولة علنياً
+  </text>
+
+  <!-- Dividing Line with Rosette -->
+  <g opacity="0.8">
+    <line x1="260" y1="810" x2="940" y2="810" stroke="url(#goldSheen)" stroke-width="2"/>
+    <polygon points="600,802 608,810 600,818 592,810" fill="#ffffff"/>
+  </g>
+
+  <!-- Supreme Victory Proclamation in Arabic (Matching Requested English Creed) -->
+  <!-- "فزنا جميعاً كلاً وفرداً بأعلى مراتب الفوز العظيم عند ﷲ" -->
+  <text x="600" y="865"
+        font-family="'Traditional Arabic', 'Amiri', 'Scheherazade New', serif"
+        font-size="34"
+        font-weight="bold"
+        fill="#fae29e"
+        text-anchor="middle"
+        filter="url(#dropShadow)">
+    فُزْنَا جَمِيعاً كُلاًّ وَفَرْداً بِأَعْلَى مَرَاتِبِ الفَوْزِ العَظِيمِ عِنْدَ &#xFDF2;
+  </text>
+
+  <!-- Foundation Team Creed -->
+  <text x="600" y="910"
+        font-family="'Cinzel', 'Trajan Pro', 'Montserrat', sans-serif"
+        font-size="14.5"
+        font-weight="800"
+        letter-spacing="5"
+        fill="#5bd697"
+        text-anchor="middle">
+    WON COLLECTIVELY AS A WHOLE TEAM DIRECTLY WITH &#xFDF2;
+  </text>
+
+  <text x="600" y="938"
+        font-family="'Montserrat', 'Cinzel', sans-serif"
+        font-size="12"
+        font-weight="600"
+        letter-spacing="6"
+        fill="#b3d9c4"
+        text-anchor="middle"
+        opacity="0.9">
+    ATTAINED THE HIGHEST RANKS IN TRUE ISLAM BAR NONE
+  </text>
+
+  <!-- Baseline Constellation Jewels (Unity of the Family) -->
+  <g filter="url(#divineGlow)">
+    <circle cx="480" cy="980" r="5" fill="url(#brightGold)"/>
+    <circle cx="530" cy="980" r="6" fill="url(#brightGold)"/>
+    <circle cx="600" cy="980" r="8" fill="#ffffff" stroke="url(#goldSheen)" stroke-width="2"/>
+    <circle cx="670" cy="980" r="6" fill="url(#brightGold)"/>
+    <circle cx="720" cy="980" r="5" fill="url(#brightGold)"/>
+    <line x1="420" y1="980" x2="465" y2="980" stroke="url(#goldSheen)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="735" y1="980" x2="780" y2="980" stroke="url(#goldSheen)" stroke-width="1.5" opacity="0.6"/>
+  </g>
+</svg>
