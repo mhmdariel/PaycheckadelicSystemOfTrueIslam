@@ -1,0 +1,630 @@
+"use strict";
+
+/*
+ * CIA TRADING DESK — ALL-IN-ONE NFT ENGINE
+ * Arabic molecular psychedelic artwork + IPFS + ERC-721.
+ *
+ * Requirements:
+ *   Node.js 20+
+ *   npm install ethers solc @openzeppelin/contracts
+ *
+ * Default: local preview only.
+ * Live testnet workflow: MODE=sepolia and MINT=true.
+ *
+ * Never put private keys or IPFS tokens in source control.
+ * Artwork graphs are artistic abstractions, not validated chemistry.
+ * No sales, buyers, revenue, or permanence are guaranteed.
+ */
+
+(async function main() {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const crypto = require("node:crypto");
+  const ethers = require("ethers");
+  const solc = require("solc");
+
+  // Load an optional .env file without requiring dotenv.
+  const envFile = path.resolve(".env");
+  if (fs.existsSync(envFile)) {
+    for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
+      const match = line.match(/^\s*([A-Za-z_]\w*)\s*=\s*(.*?)\s*$/);
+      if (match && !Object.hasOwn(process.env, match[1])) {
+        process.env[match[1]] = match[2].replace(/^["']|["']$/g, "");
+      }
+    }
+  }
+
+  const CONFIG = {
+    name: "CIA Trading Desk",
+    version: "3.0.0",
+    mode: process.env.MODE || "preview",
+    mint: process.env.MINT === "true",
+    priceUSD: 411084,
+    defaultSize: 1024,
+    maxSize: 2048,
+    maxAtoms: 120,
+    maxRings: 12,
+    maxOrbitals: 24,
+    output: path.resolve("cia-nft-output")
+  };
+
+  const PALETTES = {
+    زمردي: ["#00ff9c", "#b5ffec", "#052e2b"],
+    بنفسجي: ["#c000ff", "#ff72ed", "#18052d"],
+    ذهبي: ["#ffcc33", "#fff4b0", "#402300"],
+    ناري: ["#ff321d", "#ffb02e", "#310b18"],
+    سماوي: ["#00d9ff", "#b9f6ff", "#061e42"],
+    قوس_قزح: [
+      "#ff315c", "#ffb52e", "#f7ff45",
+      "#25ffb2", "#28a8ff", "#cf55ff"
+    ],
+    أبيض: ["#ffffff", "#b8c9ff", "#111426"],
+    ليلي: ["#3034ff", "#9d5cff", "#030314"]
+  };
+
+  const THEMES = [
+    "حلقي", "حلزوني", "نجمي",
+    "شبكي", "فركتالي", "كوني"
+  ];
+
+  const ERC721_SOURCE = `
+  // SPDX-License-Identifier: MIT
+  pragma solidity ^0.8.24;
+
+  import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+  import "@openzeppelin/contracts/access/Ownable.sol";
+
+  contract CIACollection is ERC721URIStorage, Ownable {
+      uint256 private nextTokenId = 1;
+
+      event MolecularNFTMinted(
+          uint256 indexed tokenId,
+          address indexed recipient,
+          string metadataURI
+      );
+
+      constructor()
+          ERC721("CIA Molecular Art", "CIAM")
+          Ownable(msg.sender)
+      {}
+
+      function mint(
+          address recipient,
+          string calldata metadataURI
+      ) external onlyOwner returns (uint256) {
+          require(recipient != address(0), "Invalid recipient");
+          require(bytes(metadataURI).length > 0, "Metadata URI required");
+
+          uint256 tokenId = nextTokenId++;
+          _safeMint(recipient, tokenId);
+          _setTokenURI(tokenId, metadataURI);
+
+          emit MolecularNFTMinted(tokenId, recipient, metadataURI);
+          return tokenId;
+      }
+
+      function totalMinted() external view returns (uint256) {
+          return nextTokenId - 1;
+      }
+  }`;
+
+  function ensure(condition, message) {
+    if (!condition) throw new Error(message);
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function numberValue(value, fallback) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function hash(value) {
+    return crypto.createHash("sha256")
+      .update(value).digest("hex");
+  }
+
+  function escapeXML(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
+  function rngFor(seed) {
+    let state = parseInt(hash(seed).slice(0, 8), 16) || 1;
+
+    return () => {
+      state = (Math.imul(1664525, state) + 1013904223) >>> 0;
+      return state / 4294967296;
+    };
+  }
+
+  function parseArabic(source) {
+    const v = {};
+
+    for (const raw of source.split(/\r?\n/)) {
+      const line = raw.trim();
+      if (!line || line.startsWith("#")) continue;
+
+      const pos = line.indexOf("=");
+      ensure(pos > 0, `صيغة عربية غير صحيحة: ${line}`);
+
+      v[line.slice(0, pos).trim()] = line.slice(pos + 1).trim();
+    }
+
+    const spec = {
+      name: v["الاسم"] || "حديقة الجزيئات الكونية",
+      seed: v["البذرة"] || source,
+      atoms: clamp(
+        Math.floor(numberValue(v["عدد_الذرات"], 32)), 3, CONFIG.maxAtoms
+      ),
+      rings: clamp(
+        Math.floor(numberValue(v["عدد_الحلقات"], 4)), 1, CONFIG.maxRings
+      ),
+      orbitals: clamp(
+        Math.floor(numberValue(v["عدد_المدارات"], 8)), 0, CONFIG.maxOrbitals
+      ),
+      symmetry: clamp(
+        Math.floor(numberValue(v["التماثل"], 6)), 2, 12
+      ),
+      glow: clamp(numberValue(v["التوهج"], 0.8), 0, 1),
+      complexity: clamp(numberValue(v["التعقيد"], 0.8), 0, 1),
+      size: clamp(
+        Math.floor(numberValue(v["المقاس"], CONFIG.defaultSize)),
+        256, CONFIG.maxSize
+      ),
+      palette: v["الألوان"] || "زمردي",
+      theme: v["النمط"] || "فركتالي"
+    };
+
+    ensure(PALETTES[spec.palette], `لوحة ألوان غير معروفة: ${spec.palette}`);
+    ensure(THEMES.includes(spec.theme), `نمط غير معروف: ${spec.theme}`);
+
+    return spec;
+  }
+
+  function generateGraph(spec) {
+    const random = rngFor(spec.seed);
+    const atoms = [];
+    const bonds = [];
+    const center = spec.size / 2;
+    const radius = spec.size * 0.24;
+
+    for (let ring = 0; ring < spec.rings; ring++) {
+      const ringRadius = radius * (0.42 + 0.58 * (ring + 1) / spec.rings);
+      const rotation = ring * Math.PI / spec.rings;
+      const count = Math.max(3, Math.floor(spec.atoms / spec.rings));
+      const ids = [];
+
+      for (let j = 0; j < count && atoms.length < spec.atoms; j++) {
+        const angle = j / count * Math.PI * 2 + rotation;
+        const wobble = (random() - 0.5) * spec.complexity * spec.size * 0.025;
+        ids.push(atoms.length);
+
+        atoms.push({
+          id: atoms.length + 1,
+          x: center + Math.cos(angle) * (ringRadius + wobble),
+          y: center + Math.sin(angle) * (ringRadius + wobble),
+          radius: 2.5 + random() * 4,
+          kind: atoms.length % 7 === 0 ? "luminescent" : "abstract"
+        });
+      }
+
+      ids.forEach((a, i) => {
+        const b = ids[(i + 1) % ids.length];
+        if (a !== b) bonds.push({ a, b, order: i % 3 === 0 ? 2 : 1 });
+      });
+    }
+
+    while (atoms.length < spec.atoms) {
+      const parent = Math.floor(random() * atoms.length);
+      const p = atoms[parent];
+      const angle = random() * Math.PI * 2;
+      const distance = spec.size * (0.025 + random() * 0.045);
+      const id = atoms.length;
+
+      atoms.push({
+        id: id + 1,
+        x: clamp(p.x + Math.cos(angle) * distance, 30, spec.size - 30),
+        y: clamp(p.y + Math.sin(angle) * distance, 30, spec.size - 30),
+        radius: 2.5 + random() * 4,
+        kind: "abstract"
+      });
+
+      bonds.push({ a: parent, b: id, order: 1 });
+    }
+
+    const extra = Math.floor(spec.atoms * spec.complexity * 0.35);
+
+    for (let i = 0; i < extra; i++) {
+      const a = Math.floor(random() * atoms.length);
+      let b = Math.floor(random() * atoms.length);
+      if (a === b) b = (b + 1) % atoms.length;
+      bonds.push({ a, b, order: 1 });
+    }
+
+    return { atoms, bonds };
+  }
+
+  function renderSVG(spec, graph, tokenId) {
+    const size = spec.size;
+    const palette = PALETTES[spec.palette];
+    const random = rngFor(spec.seed + ":visual");
+    const [primary, secondary, background] = palette;
+
+    const bondSVG = graph.bonds.map(bond => {
+      const a = graph.atoms[bond.a];
+      const b = graph.atoms[bond.b];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const length = Math.hypot(dx, dy) || 1;
+
+      return Array.from({ length: bond.order }, (_, i) => {
+        const offset = (i - (bond.order - 1) / 2) * 4;
+        const ox = -dy / length * offset;
+        const oy = dx / length * offset;
+
+        return `<line x1="${a.x + ox}" y1="${a.y + oy}"
+          x2="${b.x + ox}" y2="${b.y + oy}"
+          stroke="${primary}" stroke-width="${1.5 + spec.glow * 1.7}"
+          stroke-linecap="round" opacity=".8"/>`;
+      }).join("");
+    }).join("\n");
+
+    const atomSVG = graph.atoms.map(a => `
+      <circle cx="${a.x}" cy="${a.y}" r="${a.radius}"
+        fill="${a.kind === "luminescent" ? secondary : primary}"
+        filter="url(#glow)"/>
+      <circle cx="${a.x}" cy="${a.y}" r="${a.radius * 0.3}"
+        fill="#ffffff"/>
+    `).join("");
+
+    const orbitals = Array.from({ length: spec.orbitals }, (_, i) => {
+      const rx = size * (0.1 + 0.022 * i);
+      const ry = size * (0.045 + 0.013 * i);
+      const rotation = 360 / Math.max(1, spec.orbitals) * i;
+
+      return `<ellipse cx="${size / 2}" cy="${size / 2}"
+        rx="${rx}" ry="${ry}"
+        transform="rotate(${rotation} ${size / 2} ${size / 2})"
+        fill="none" stroke="${palette[i % palette.length]}"
+        opacity=".24" stroke-width="2"/>`;
+    }).join("");
+
+    const stars = Array.from(
+      { length: Math.floor(size * spec.complexity / 3) },
+      () => `<circle cx="${random() * size}" cy="${random() * size}"
+        r="${0.5 + random() * 2}" fill="${secondary}" opacity=".65"/>`
+    ).join("");
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+ width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+ <title>${escapeXML(spec.name)}</title>
+ <desc>فن جزيئي تجريدي؛ البنية غير متحققة كيميائيا.</desc>
+ <defs>
+  <radialGradient id="bg">
+   <stop offset="0%" stop-color="${background}"/>
+   <stop offset="100%" stop-color="#02020b"/>
+  </radialGradient>
+  <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+   <feGaussianBlur stdDeviation="${2 + spec.glow * 8}" result="b"/>
+   <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+ </defs>
+ <rect width="100%" height="100%" fill="url(#bg)"/>
+ ${stars}
+ ${orbitals}
+ ${bondSVG}
+ ${atomSVG}
+ <circle cx="${size / 2}" cy="${size / 2}" r="${size * 0.31}"
+   fill="none" stroke="${secondary}" opacity=".35"/>
+ <text x="${size / 2}" y="${size * 0.91}" fill="${secondary}"
+   font-size="${size * 0.026}" text-anchor="middle"
+   font-family="sans-serif" direction="rtl">${escapeXML(spec.name)}</text>
+ <text x="${size / 2}" y="${size * 0.95}" fill="${primary}"
+   font-size="${size * 0.014}" text-anchor="middle"
+   font-family="sans-serif">CIA TRADING DESK • ${tokenId}</text>
+</svg>`;
+  }
+
+  function generate(source) {
+    const spec = parseArabic(source);
+    const graph = generateGraph(spec);
+    const tokenId = hash(JSON.stringify({ spec, graph })).slice(0, 16);
+    const svg = renderSVG(spec, graph, tokenId);
+
+    const metadata = {
+      name: spec.name,
+      description:
+        "Arabic-specified procedural psychedelic molecular artwork. " +
+        "The graph is an artistic abstraction, not chemically validated.",
+      image: `./${tokenId}.svg`,
+      token_id: tokenId,
+      attributes: [
+        { trait_type: "Language", value: "Arabic" },
+        { trait_type: "Theme", value: spec.theme },
+        { trait_type: "Palette", value: spec.palette },
+        { trait_type: "Abstract atoms", value: graph.atoms.length },
+        { trait_type: "Abstract bonds", value: graph.bonds.length },
+        { trait_type: "Symmetry setting", value: spec.symmetry },
+        { trait_type: "Complexity", value: spec.complexity }
+      ],
+      properties: {
+        specification: spec,
+        graph,
+        source_hash: hash(source),
+        asking_price: { amount: CONFIG.priceUSD, currency: "USD" }
+      }
+    };
+
+    return { spec, graph, tokenId, svg, metadata };
+  }
+
+  function compileContract() {
+    const input = {
+      language: "Solidity",
+      sources: { "CIACollection.sol": { content: ERC721_SOURCE } },
+      settings: {
+        optimizer: { enabled: true, runs: 200 },
+        outputSelection: {
+          "*": { "*": ["abi", "evm.bytecode.object"] }
+        }
+      }
+    };
+
+    function importSource(importPath) {
+      const root = path.resolve("node_modules");
+      const resolved = path.resolve(root, importPath);
+
+      if (!resolved.startsWith(root + path.sep)) {
+        return { error: "Import path rejected" };
+      }
+
+      try {
+        return { contents: fs.readFileSync(resolved, "utf8") };
+      } catch {
+        return { error: `Cannot resolve ${importPath}; install OpenZeppelin.` };
+      }
+    }
+
+    const output = JSON.parse(
+      solc.compile(JSON.stringify(input), { import: importSource })
+    );
+
+    const errors = (output.errors || []).filter(
+      e => e.severity === "error"
+    );
+
+    ensure(
+      errors.length === 0,
+      errors.map(e => e.formattedMessage).join("\n")
+    );
+
+    const contract = output.contracts["CIACollection.sol"].CIACollection;
+
+    ensure(contract.evm.bytecode.object, "Contract bytecode is empty.");
+
+    return {
+      abi: contract.abi,
+      bytecode: "0x" + contract.evm.bytecode.object
+    };
+  }
+
+  async function pinataRequest(endpoint, body, isJSON = false) {
+    ensure(process.env.PINATA_JWT, "PINATA_JWT is required for IPFS uploads.");
+
+    const response = await fetch(`https://api.pinata.cloud/pinning/${endpoint}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.PINATA_JWT}`,
+        ...(isJSON ? { "Content-Type": "application/json" } : {})
+      },
+      body: isJSON ? JSON.stringify(body) : body
+    });
+
+    ensure(
+      response.ok,
+      `Pinata error ${response.status}: ${await response.text()}`
+    );
+
+    const result = await response.json();
+    ensure(result.IpfsHash, "IPFS upload returned no CID.");
+
+    return result.IpfsHash;
+  }
+
+  async function uploadArtwork(nft) {
+    const form = new FormData();
+
+    form.append(
+      "file",
+      new Blob([nft.svg], { type: "image/svg+xml" }),
+      `${nft.tokenId}.svg`
+    );
+
+    form.append(
+      "pinataMetadata",
+      JSON.stringify({ name: `${nft.tokenId}.svg` })
+    );
+
+    const imageCID = await pinataRequest("pinFileToIPFS", form);
+
+    const metadata = {
+      ...nft.metadata,
+      image: `ipfs://${imageCID}`
+    };
+
+    const metadataCID = await pinataRequest("pinJSONToIPFS", {
+      pinataMetadata: { name: `${nft.tokenId}.json` },
+      pinataContent: metadata
+    }, true);
+
+    return {
+      imageCID,
+      metadataCID,
+      metadataURI: `ipfs://${metadataCID}`
+    };
+  }
+
+  async function mintOnSepolia(nft, ipfs) {
+    ensure(CONFIG.mode === "sepolia", "Minting requires MODE=sepolia.");
+    ensure(CONFIG.mint, "Set MINT=true to explicitly enable minting.");
+    ensure(process.env.RPC_URL, "RPC_URL is required.");
+    ensure(process.env.PRIVATE_KEY, "PRIVATE_KEY is required.");
+    ensure(process.env.RECIPIENT_ADDRESS, "RECIPIENT_ADDRESS is required.");
+
+    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+    const network = await provider.getNetwork();
+
+    ensure(network.chainId === 11155111n, "Refusing non-Sepolia network.");
+
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    const recipient = ethers.getAddress(process.env.RECIPIENT_ADDRESS);
+    const compiled = compileContract();
+
+    console.log("Deploying ERC-721 contract to Sepolia...");
+    const factory = new ethers.ContractFactory(
+      compiled.abi, compiled.bytecode, wallet
+    );
+
+    const collection = await factory.deploy();
+    await collection.waitForDeployment();
+
+    const contractAddress = await collection.getAddress();
+    const deploymentReceipt = await collection.deploymentTransaction().wait();
+
+    ensure(deploymentReceipt.status === 1, "Contract deployment failed.");
+
+    console.log("Contract:", contractAddress);
+    console.log("Uploading artwork and metadata to IPFS...");
+
+    const uploaded = await uploadArtwork(nft);
+
+    const mintTx = await collection.mint(
+      recipient, uploaded.metadataURI
+    );
+
+    console.log("Mint transaction:", mintTx.hash);
+    const receipt = await mintTx.wait();
+
+    ensure(receipt && receipt.status === 1, "Mint transaction failed.");
+
+    const iface = new ethers.Interface(compiled.abi);
+    let mintedEvent = null;
+
+    for (const log of receipt.logs) {
+      try {
+        const parsed = iface.parseLog(log);
+        if (parsed && parsed.name === "MolecularNFTMinted") {
+          mintedEvent = parsed;
+          break;
+        }
+      } catch {}
+    }
+
+    ensure(mintedEvent, "Mint event not found in receipt.");
+
+    const record = {
+      name: nft.spec.name,
+      tokenId: mintedEvent.args.tokenId.toString(),
+      contractAddress,
+      recipient,
+      network: "Sepolia",
+      chainId: network.chainId.toString(),
+      deploymentTransaction: deploymentReceipt.hash,
+      transactionHash: receipt.hash,
+      blockNumber: receipt.blockNumber,
+      imageURI: `ipfs://${uploaded.imageCID}`,
+      metadataURI: uploaded.metadataURI,
+      askingPriceUSD: CONFIG.priceUSD,
+      status: "MINTED",
+      timestamp: new Date().toISOString()
+    };
+
+    saveRecord(record);
+    console.log("MINT CONFIRMED:\n", JSON.stringify(record, null, 2));
+
+    await provider.destroy();
+  }
+
+  function saveRecord(record) {
+    fs.mkdirSync(CONFIG.output, { recursive: true });
+    const filename = path.join(
+      CONFIG.output, `${record.tokenId || record.tokenIdHash}.json`
+    );
+
+    fs.writeFileSync(filename, JSON.stringify(record, null, 2), {
+      flag: "wx"
+    });
+  }
+
+  function savePreview(nft) {
+    fs.mkdirSync(CONFIG.output, { recursive: true });
+
+    for (const [extension, value] of [
+      ["svg", nft.svg],
+      ["json", JSON.stringify(nft.metadata, null, 2)],
+      ["graph.json", JSON.stringify(nft.graph, null, 2)]
+    ]) {
+      fs.writeFileSync(
+        path.join(CONFIG.output, `${nft.tokenId}.${extension}`),
+        value,
+        { flag: "wx" }
+      );
+    }
+
+    console.log("معاينة العمل جاهزة.");
+    console.log("الاسم:", nft.spec.name);
+    console.log("معرّف التصميم:", nft.tokenId);
+    console.log("المجلد:", CONFIG.output);
+    console.log("السعر المطلوب:", `$${CONFIG.priceUSD.toLocaleString("en-US")}`);
+    console.log("لم يتم إجراء أي معاملة بلوك تشين.");
+  }
+
+  const defaultSpecification = [
+    "الاسم=حديقة الجزيئات الكونية",
+    "البذرة=نور-٤١١٠٨٤",
+    "عدد_الذرات=32",
+    "عدد_الحلقات=4",
+    "عدد_المدارات=8",
+    "التماثل=6",
+    "الألوان=زمردي",
+    "النمط=فركتالي",
+    "التوهج=0.85",
+    "التعقيد=0.8",
+    "المقاس=1024"
+  ].join("\n");
+
+  const inputFile = process.argv[2];
+  const specification = inputFile
+    ? fs.readFileSync(path.resolve(inputFile), "utf8")
+    : defaultSpecification;
+
+  console.log(`${CONFIG.name} v${CONFIG.version}`);
+  console.log("Mode:", CONFIG.mode);
+
+  const nft = generate(specification);
+
+  if (CONFIG.mode === "preview") {
+    savePreview(nft);
+    return;
+  }
+
+  if (CONFIG.mode === "sepolia") {
+    ensure(CONFIG.mint, "Preview only: set MINT=true to authorize testnet minting.");
+    await mintOnSepolia(nft, await Promise.resolve(null));
+    return;
+  }
+
+  throw new Error("Unsupported MODE. Use preview or sepolia.");
+
+})().catch(error => {
+  console.error("CIA Trading Desk stopped:", error.message);
+  process.exitCode = 1;
+});
