@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>منظومة الموسيقى العالمية | Global Music Engine</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:#080b10;color:#e9f4ee;
+font:16px system-ui,sans-serif}
+main{max-width:900px;margin:auto;padding:22px}
+h1{color:#9cf5b1;font-size:clamp(24px,5vw,38px)}
+p{line-height:1.8}
+.panel{border:1px solid #294b3a;border-radius:16px;
+padding:18px;margin:16px 0;background:#101820}
+label{display:block;margin:15px 0 6px}
+input,select,button{font:inherit;padding:11px;
+border-radius:9px;border:1px solid #496252;
+background:#17231d;color:#fff;width:100%}
+button{cursor:pointer;margin-top:10px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.primary{background:#174a2b}
+small{color:#b4c9bd}
+#status{color:#a9f5bc;min-height:28px}
+</style>
+</head>
+<body>
+<main>
+<h1 id="title">منظومة الموسيقى العالمية</h1>
+<p id="intro">مولّد الصوت الإيقاعي والنغمات النبضية والموسيقى
+السينمائية العسكرية والتجريبية.</p>
+
+<section class="panel">
+<label id="langLabel">لغة الواجهة</label>
+<select id="lang">
+<option value="ar">العربية</option>
+<option value="bn">বাংলা — Bangla</option>
+<option value="zh">繁體中文 — Traditional Chinese</option>
+<option value="en">English</option>
+<option value="he">עברית — Hebrew</option>
+<option value="syr">ܠܫܢܐ ܣܘܪܝܝܐ — Syriac</option>
+<option value="yo">Yorùbá</option>
+<option value="es">Español</option>
+<option value="wo">Wolof — Sénégal</option>
+<option value="af">Afrikaans</option>
+<option value="ja">日本語</option>
+<option value="fr">Français</option>
+<option value="pt">Português</option>
+<option value="ru">Русский</option>
+<option value="uk">Українська</option>
+<option value="light">Light Language — experimental</option>
+</select>
+</section>
+
+<section class="panel">
+<label id="modeLabel">نمط التوليد</label>
+<select id="mode">
+<option value="iso">النغمات النبضية Isochronic</option>
+<option value="psy">الموسيقى السايكدلية التجريبية</option>
+<option value="mil">الإيقاع العسكري السينمائي</option>
+<option value="hybrid">المزيج الشامل</option>
+</select>
+
+<label id="carrierLabel">التردد الأساسي: <span id="carrierV">220</span> Hz</label>
+<input id="carrier" type="range" min="20" max="2000" value="220">
+
+<label id="pulseLabel">معدل النبض: <span id="pulseV">8</span> Hz</label>
+<input id="pulse" type="range" min="0.5" max="40" step="0.5" value="8">
+
+<label id="bpmLabel">الإيقاع الموسيقي: <span id="bpmV">120</span> BPM</label>
+<input id="bpm" type="range" min="40" max="200" value="120">
+
+<label id="depthLabel">عمق النبض: <span id="depthV">70</span>%</label>
+<input id="depth" type="range" min="0" max="100" value="70">
+
+<label id="volumeLabel">مستوى الصوت</label>
+<input id="volume" type="range" min="0" max="30" value="12">
+
+<label id="specLabel">مواصفات إضافية باللغة العربية أو أي لغة مدعومة</label>
+<textarea id="spec" rows="4" style="width:100%;background:#17231d;
+color:white;border-radius:9px;padding:12px"
+placeholder="مثال: طبول احتفالية، موجات صوتية متحركة، أصوات عميقة وإيقاع سينمائي."></textarea>
+
+<div class="actions">
+<button class="primary" id="start">▶ تشغيل الصوت</button>
+<button id="stop">■ إيقاف الصوت</button>
+</div>
+<div class="actions">
+<button id="export">تصدير المواصفات JSON</button>
+<button id="record">● بدء تسجيل WAV</button>
+</div>
+<p id="status" role="status" aria-live="polite">جاهز</p>
+<small id="notice">يبدأ الصوت بعد تفاعل المستخدم. استخدم مستوى صوت منخفضاً
+وتجنب الاستماع المطوّل بمستوى مرتفع.</small>
+</section>
+</main>
+
+<script>
+"use strict";
+
+/* واجهة متعددة اللغات قابلة للتوسيع.
+   Wolof هو مثال اللغة السنغالية، وليس اسماً للغة موحدة.
+   Light Language وحدة تجريبية وليست معياراً لغوياً موحداً. */
+const T = {
+ar:{title:"منظومة الموسيقى العالمية",intro:"مولّد الصوت الإيقاعي والنغمات النبضية والموسيقى السينمائية العسكرية والتجريبية.",lang:"لغة الواجهة",mode:"نمط التوليد",iso:"النغمات النبضية Isochronic",psy:"الموسيقى السايكدلية التجريبية",mil:"الإيقاع العسكري السينمائي",hybrid:"المزيج الشامل",carrier:"التردد الأساسي",pulse:"معدل النبض",bpm:"الإيقاع الموسيقي",depth:"عمق النبض",volume:"مستوى الصوت",spec:"المواصفات",start:"▶ تشغيل الصوت",stop:"■ إيقاف الصوت",export:"تصدير المواصفات JSON",record:"● بدء تسجيل WAV",ready:"جاهز",on:"الصوت يعمل",off:"تم إيقاف الصوت",rec:"التسجيل يعمل",done:"اكتمل التصدير",notice:"يبدأ الصوت بعد تفاعل المستخدم. استخدم مستوى صوت منخفضاً وتجنب الاستماع المطوّل بمستوى مرتفع."},
+en:{title:"Global Music Engine",intro:"Real-time isochronic pulses, psychedelic soundscapes and cinematic military-style rhythms.",lang:"Interface language",mode:"Generation mode",iso:"Isochronic tones",psy:"Experimental psychedelic",mil:"Cinematic military rhythm",hybrid:"Hybrid soundscape",carrier:"Carrier frequency",pulse:"Pulse rate",bpm:"Musical tempo",depth:"Pulse depth",volume:"Output volume",spec:"Creative specification",start:"▶ Start audio",stop:"■ Stop audio",export:"Export JSON specification",record:"● Start WAV recording",ready:"Ready",on:"Audio running",off:"Audio stopped",rec:"Recording",done:"Export complete",notice:"Audio starts after user interaction. Keep the volume low and avoid prolonged loud listening."},
+bn:{title:"বিশ্ব সঙ্গীত ইঞ্জিন",intro:"আইসোক্রোনিক পালস, পরীক্ষামূলক সাইকেডেলিক সাউন্ড এবং সিনেমাটিক সামরিক ছন্দ।",lang:"ইন্টারফেসের ভাষা",mode:"সাউন্ডের ধরন",iso:"আইসোক্রোনিক টোন",psy:"সাইকেডেলিক",mil:"সিনেমাটিক সামরিক ছন্দ",hybrid:"সমন্বিত সাউন্ড",carrier:"মূল কম্পাঙ্ক",pulse:"পালসের হার",bpm:"তাল",depth:"পালসের গভীরতা",volume:"শব্দের মাত্রা",spec:"সৃষ্টির নির্দেশনা",start:"▶ চালু করুন",stop:"■ বন্ধ করুন",export:"JSON রপ্তানি",record:"● WAV রেকর্ড",ready:"প্রস্তুত",on:"শব্দ চলছে",off:"শব্দ বন্ধ",rec:"রেকর্ড চলছে",done:"রপ্তানি সম্পন্ন",notice:"শব্দ কম রাখুন।"},
+zh:{title:"全球音乐引擎",intro:"等时脉冲、实验性迷幻音景与电影式军乐节奏。",lang:"界面语言",mode:"生成模式",iso:"等时音调",psy:"实验迷幻音乐",mil:"电影式军乐节奏",hybrid:"混合音景",carrier:"基础频率",pulse:"脉冲频率",bpm:"音乐速度",depth:"脉冲深度",volume:"音量",spec:"创作规格",start:"▶ 开始播放",stop:"■ 停止",export:"导出 JSON",record:"● 开始 WAV 录音",ready:"就绪",on:"正在播放",off:"已停止",rec:"录音中",done:"导出完成",notice:"请保持较低音量，避免长时间大音量聆听。"},
+he:{title:"מנוע המוזיקה העולמי",intro:"פעימות איזוכרוניות, נופי צליל פסיכדליים ומקצבים קולנועיים.",lang:"שפת הממשק",mode:"מצב יצירה",iso:"צלילים איזוכרוניים",psy:"מוזיקה פסיכדלית ניסיונית",mil:"מקצב צבאי קולנועי",hybrid:"צליל משולב",carrier:"תדר בסיסי",pulse:"קצב פעימות",bpm:"קצב מוזיקלי",depth:"עומק פעימה",volume:"עוצמת שמע",spec:"מפרט יצירתי",start:"▶ הפעל",stop:"■ עצור",export:"ייצוא JSON",record:"● הקלטת WAV",ready:"מוכן",on:"השמע פועל",off:"השמע נעצר",rec:"מקליט",done:"הייצוא הושלם",notice:"יש להאזין בעוצמה נמוכה."},
+syr:{title:"ܡܛܪܬܐ ܕܡܘܣܝܩܝ",intro:"ܩܠ̈ܐ ܕܦܘܠܣܐ ܘܢܘܗܪ̈ܐ ܕܩܠܐ",lang:"ܠܫܢܐ",mode:"ܐܘܪܚܐ",iso:"ܩܠ̈ܐ ܕܦܘܠܣܐ",psy:"ܩܠ̈ܐ ܢܣܝܘܢܝ̈ܐ",mil:"ܩܠܐ ܕܡܫܪܝܬܐ",hybrid:"ܩܠܐ ܡܥܪܒܐ",carrier:"ܬܕܪܐ",pulse:"ܩܝܣܐ",bpm:"ܩܝܣܐ ܡܘܣܝܩܝܐ",depth:"ܥܘܡܩܐ",volume:"ܩܠܐ",spec:"ܡܦܩܐ",start:"▶ ܫܪܝ",stop:"■ ܦܣܘܩ",export:"ܦܘܩ JSON",record:"● WAV",ready:"ܡܛܝܒ",on:"ܩܠܐ ܥܒܕ",off:"ܩܠܐ ܦܣܩ",rec:"ܟܬܒ",done:"ܫܠܡ",notice:"ܚܡܘܣ ܩܠܐ ܙܥܘܪܐ."},
+yo:{title:"Ẹ̀rọ Orin Àgbáyé",intro:"Àwọn ìlù ìgbì, orin àdánwò àti ìlù fíìmù.",lang:"Èdè ojú-ìwé",mode:"Irú orin",iso:"Ohùn ìgbì",psy:"Orin àdánwò",mil:"Ìlù fíìmù ológun",hybrid:"Orin àpapọ̀",carrier:"Ìgbà ohùn",pulse:"Ìwọ̀n ìlù",bpm:"Ìṣísẹ̀ orin",depth:"Ìjinlẹ̀ ìlù",volume:"Agbára ohùn",spec:"Àlàyé ìṣẹ̀dá",start:"▶ Bẹ̀rẹ̀",stop:"■ Dúró",export:"Gbé JSON jáde",record:"● Gba WAV sílẹ̀",ready:"Ṣetán",on:"Orin ń ṣiṣẹ́",off:"Orin dúró",rec:"Ń gba ohùn",done:"Ó parí",notice:"Jọ̀wọ́ lo ohùn kékeré."},
+es:{title:"Motor Musical Mundial",intro:"Pulsos isocrónicos, paisajes psicodélicos y ritmos cinematográficos.",lang:"Idioma",mode:"Modo de generación",iso:"Tonos isocrónicos",psy:"Psicodelia experimental",mil:"Ritmo militar cinematográfico",hybrid:"Paisaje híbrido",carrier:"Frecuencia base",pulse:"Frecuencia de pulso",bpm:"Tempo musical",depth:"Profundidad del pulso",volume:"Volumen",spec:"Especificación creativa",start:"▶ Iniciar audio",stop:"■ Detener",export:"Exportar JSON",record:"● Grabar WAV",ready:"Listo",on:"Audio activo",off:"Audio detenido",rec:"Grabando",done:"Exportación completa",notice:"Mantén el volumen bajo."},
+wo:{title:"Masin Muusik Bu Àdduna",intro:"Bépp yu mel ni pulsu, muusik yuñ seet ak ritiima sinemaa.",lang:"Làkk",mode:"Xeetu muusik",iso:"Toni yu pulsu",psy:"Muusik yuñ seet",mil:"Ritiim sinemaa bu militɛr",hybrid:"Muusik bu boole",carrier:"Frekans bu njëkk",pulse:"Dëppukaay",bpm:"Tempo",depth:"Doole pulsu",volume:"Doole baat",spec:"Xelal ci sos",start:"▶ Tàmbali",stop:"■ Taxaw",export:"Yónnee JSON",record:"● Jëfandikoo WAV",ready:"Pare",on:"Muusik mi ngi dox",off:"Muusik taxaw",rec:"Mi ngi bind",done:"Jeex na",notice:"Wàññi doole baat."},
+af:{title:"Wêreldmusiek-enjin",intro:"Isochroniese pulse, eksperimentele klanklandskappe en filmiese ritmes.",lang:"Koppelvlaktaal",mode:"Genereringsmodus",iso:"Isochroniese tone",psy:"Eksperimentele psigedeliese musiek",mil:"Filmiese militêre ritme",hybrid:"Gemengde klanklandskap",carrier:"Basisfrekwensie",pulse:"Pulsfrekwensie",bpm:"Musiektempo",depth:"Pulsdiepte",volume:"Volume",spec:"Kreatiewe spesifikasie",start:"▶ Begin",stop:"■ Stop",export:"Voer JSON uit",record:"● Neem WAV op",ready:"Gereed",on:"Oudio speel",off:"Oudio gestop",rec:"Neem op",done:"Uitvoer voltooi",notice:"Hou die volume laag."},
+ja:{title:"グローバル音楽エンジン",intro:"アイソクロニックパルス、実験的サイケデリック音響、映画的リズム。",lang:"表示言語",mode:"生成モード",iso:"アイソクロニック音",psy:"実験的サイケデリック",mil:"映画的な軍楽リズム",hybrid:"複合サウンド",carrier:"基本周波数",pulse:"パルス周波数",bpm:"テンポ",depth:"パルスの深さ",volume:"音量",spec:"制作仕様",start:"▶ 再生",stop:"■ 停止",export:"JSONを書き出す",record:"● WAV録音",ready:"準備完了",on:"再生中",off:"停止しました",rec:"録音中",done:"書き出し完了",notice:"音量を低く保ってください。"},
+fr:{title:"Moteur musical mondial",intro:"Impulsions isochrones, paysages psychédéliques et rythmes cinématographiques.",lang:"Langue",mode:"Mode de génération",iso:"Tons isochrones",psy:"Psychédélisme expérimental",mil:"Rythme militaire cinématographique",hybrid:"Paysage sonore hybride",carrier:"Fréquence porteuse",pulse:"Fréquence des impulsions",bpm:"Tempo",depth:"Profondeur des impulsions",volume:"Volume",spec:"Spécification créative",start:"▶ Démarrer",stop:"■ Arrêter",export:"Exporter JSON",record:"● Enregistrer WAV",ready:"Prêt",on:"Audio actif",off:"Audio arrêté",rec:"Enregistrement",done:"Export terminé",notice:"Gardez le volume bas."},
+pt:{title:"Motor Musical Global",intro:"Pulsos isocrónicos, paisagens psicadélicas e ritmos cinematográficos.",lang:"Idioma",mode:"Modo de geração",iso:"Tons isocrónicos",psy:"Psicadelismo experimental",mil:"Ritmo militar cinematográfico",hybrid:"Paisagem sonora híbrida",carrier:"Frequência base",pulse:"Frequência do pulso",bpm:"Ritmo musical",depth:"Profundidade do pulso",volume:"Volume",spec:"Especificação criativa",start:"▶ Iniciar",stop:"■ Parar",export:"Exportar JSON",record:"● Gravar WAV",ready:"Pronto",on:"Áudio ativo",off:"Áudio parado",rec:"A gravar",done:"Exportação concluída",notice:"Mantenha o volume baixo."},
+ru:{title:"Глобальный музыкальный движок",intro:"Изохронные импульсы, экспериментальная психоделика и кинематографические ритмы.",lang:"Язык интерфейса",mode:"Режим генерации",iso:"Изохронные тоны",psy:"Экспериментальная психоделика",mil:"Кинематографический военный ритм",hybrid:"Смешанный звуковой ландшафт",carrier:"Основная частота",pulse:"Частота импульсов",bpm:"Темп",depth:"Глубина импульсов",volume:"Громкость",spec:"Творческое описание",start:"▶ Запустить",stop:"■ Остановить",export:"Экспорт JSON",record:"● Записать WAV",ready:"Готово",on:"Звук включён",off:"Звук остановлен",rec:"Идёт запись",done:"Экспорт завершён",notice:"Слушайте на низкой громкости."},
+uk:{title:"Глобальний музичний рушій",intro:"Ізохронні імпульси, експериментальні психоделічні звуки та кінематографічні ритми.",lang:"Мова інтерфейсу",mode:"Режим генерації",iso:"Ізохронні тони",psy:"Експериментальна психоделія",mil:"Кінематографічний військовий ритм",hybrid:"Змішаний звуковий простір",carrier:"Основна частота",pulse:"Частота імпульсів",bpm:"Темп",depth:"Глибина імпульсів",volume:"Гучність",spec:"Творча специфікація",start:"▶ Запустити",stop:"■ Зупинити",export:"Експорт JSON",record:"● Запис WAV",ready:"Готово",on:"Звук відтворюється",off:"Звук зупинено",rec:"Запис триває",done:"Експорт завершено",notice:"Слухайте на низькій гучності."},
+light:{title:"✧ LUMA · SONIC ∞",intro:"⟡ Pulse · Resonance · Spiral · Soundscape ⟡",lang:"Glyph language",mode:"Sound pathway",iso:"◉ Pulse field",psy:"✧ Spiral dreamscape",mil:"⟡ Ceremonial rhythm",hybrid:"∞ Confluence",carrier:"Resonance",pulse:"Pulse cycle",bpm:"Rhythmic flow",depth:"Pulse depth",volume:"Sound level",spec:"Creative glyph specification",start:"▶ Awaken sound",stop:"■ Silence",export:"Export pattern",record:"● Capture WAV",ready:"⟡ Ready",on:"∞ Sound flowing",off:"■ Silent",rec:"● Capturing",done:"⟡ Complete",notice:"Experimental symbolic interface; not a standardized language."}
+};
+
+const $=id=>document.getElementById(id);
+let ctx=null,master=null,nodes=[],timer=null,recorder=null,recordChunks=[];
+let mediaDest=null,recording=false;
+
+function tr(key){return (T[$("lang").value]||T.en)[key]||T.en[key]||key}
+function setStatus(key){$("status").textContent=tr(key)}
+function localize(){
+ const lang=$("lang").value;
+ document.documentElement.lang=lang==="light"?"en":lang;
+ document.documentElement.dir=["ar","he","syr"].includes(lang)?"rtl":"ltr";
+ ["title","intro","langLabel","modeLabel","carrierLabel","pulseLabel",
+ "bpmLabel","depthLabel","volumeLabel","specLabel","start","stop",
+ "export","record","notice"].forEach(id=>{
+   const map={langLabel:"lang",modeLabel:"mode",carrierLabel:"carrier",
+   pulseLabel:"pulse",bpmLabel:"bpm",depthLabel:"depth",
+   volumeLabel:"volume",specLabel:"spec"};
+   if(map[id]) $(id).firstChild.textContent=tr(map[id])+" ";
+   else if(T[lang]&&T[lang][id]) $(id).textContent=tr(id);
+ });
+ const opts=$("mode").options;
+ ["iso","psy","mil","hybrid"].forEach((k,i)=>opts[i].textContent=tr(k));
+ updateNumbers();
+ setStatus("ready");
+}
+function updateNumbers(){
+ ["carrier","pulse","bpm","depth"].forEach(k=>{
+ $(k+"V").textContent=$(k).value;
+ });
+}
+["carrier","pulse","bpm","depth"].forEach(k=>{
+ $(k).addEventListener("input",updateNumbers);
+});
+$("lang").addEventListener("change",localize);
+
+function osc(freq,type="sine"){
+ const o=ctx.createOscillator();
+ o.type=type;o.frequency.value=freq;
+ const g=ctx.createGain();g.gain.value=0;
+ o.connect(g);g.connect(master);o.start();
+ nodes.push(o,g);
+ return {o,g};
+}
+function schedulePulse(g,rate,depth){
+ if(timer)clearInterval(timer);
+ const period=1000/rate;
+ let phase=0;
+ const d=depth/100;
+ g.gain.setValueAtTime(.0001,ctx.currentTime);
+ timer=setInterval(()=>{
+   if(!ctx||ctx.state==="closed")return;
+   const t=ctx.currentTime;
+   const high=Math.max(.0001,d*.15);
+   const low=Math.max(.0001,(1-d)*.15);
+   g.gain.cancelScheduledValues(t);
+   g.gain.setValueAtTime(high,t);
+   g.gain.setValueAtTime(low,t+period/2000);
+ },Math.max(12,period));
+}
+function drum(){
+ const o=ctx.createOscillator(),g=ctx.createGain();
+ o.type="sine";
+ o.frequency.setValueAtTime(110,ctx.currentTime);
+ o.frequency.exponentialRampToValueAtTime(42,ctx.currentTime+.14);
+ g.gain.setValueAtTime(.22,ctx.currentTime);
+ g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
+ o.connect(g);g.connect(master);
+ o.start();o.stop(ctx.currentTime+.2);
+}
+async function startAudio(){
+ stopAudio(false);
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){$("status").textContent="Web Audio API unavailable";return}
+ ctx=new AC();await ctx.resume();
+ master=ctx.createGain();
+ master.gain.value=Number($("volume").value)/100;
+ master.connect(ctx.destination);
+ mediaDest=ctx.createMediaStreamDestination();
+ master.connect(mediaDest);
+ const mode=$("mode").value;
+ const f=Number($("carrier").value);
+ const rate=Number($("pulse").value);
+ const depth=Number($("depth").value);
+ const base=osc(f,"sawtooth");
+ const filter=ctx.createBiquadFilter();
+ filter.type="lowpass";filter.frequency.value=1800;
+ base.g.connect(filter);
+ // Move the carrier's output through a filter into the master bus.
+ base.g.disconnect();filter.connect(master);
+ base.g.gain.value=.12;
+ const pulseGate=ctx.createGain();
+ pulseGate.gain.value=.15;
+ const carrier=ctx.createOscillator();
+ carrier.type="sine";carrier.frequency.value=f;
+ carrier.connect(pulseGate);pulseGate.connect(master);
+ carrier.start();nodes.push(carrier,pulseGate);
+ if(mode==="iso"||mode==="hybrid")schedulePulse(pulseGate,rate,depth);
+ if(mode==="psy"||mode==="hybrid"){
+   [1.005,1.5,2.01].forEach((ratio,i)=>{
+     const x=osc(f*ratio,i===1?"triangle":"sine");
+     x.g.gain.value=.025;
+     const lfo=ctx.createOscillator();
+     const lg=ctx.createGain();
+     lfo.frequency.value=.05+i*.035;
+     lg.gain.value=150+i*100;
+     lfo.connect(lg);lg.connect(filter.frequency);
+     lfo.start();nodes.push(lfo,lg);
+   });
+ }
+ if(mode==="mil"||mode==="hybrid"){
+   const beatMs=60000/Number($("bpm").value);
+   let n=0;
+   timer=setInterval(()=>{
+     if(!ctx||ctx.state==="closed")return;
+     if(n%4===0||n%4===2)drum();
+     n++;
+   },beatMs/2);
+ }
+ if(mode==="psy"){
+   const lfo=ctx.createOscillator(),lg=ctx.createGain();
+   lfo.frequency.value=.09;lg.gain.value=900;
+   lfo.connect(lg);lg.connect(filter.frequency);lfo.start();
+   nodes.push(lfo,lg);
+ }
+ if(mode==="iso")filter.frequency.value=3500;
+ setStatus("on");
+}
+function stopAudio(update=true){
+ if(timer){clearInterval(timer);timer=null}
+ nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect()}catch(e){}});
+ nodes=[];
+ if(ctx){const old=ctx;ctx=null;old.close().catch(()=>{});}
+ master=null;mediaDest=null;
+ if(update)setStatus("off");
+}
+$("start").addEventListener("click",startAudio);
+$("stop").addEventListener("click",()=>stopAudio(true));
+$("volume").addEventListener("input",()=>{
+ if(master)master.gain.value=Number($("volume").value)/100;
+});
+function config(){
+ return {
+  product:"Global Qur'an-al-Mubeen-inspired Sonic Engine",
+  version:"1.0.0-prototype",
+  language:$("lang").value,
+  mode:$("mode").value,
+  carrierHz:Number($("carrier").value),
+  pulseHz:Number($("pulse").value),
+  tempoBpm:Number($("bpm").value),
+  pulseDepthPercent:Number($("depth").value),
+  volumePercent:Number($("volume").value),
+  creativeSpecification:$("spec").value,
+  note:"Audio synthesis is a creative process, not Qur'anic revelation or a guaranteed therapeutic effect."
+ };
+}
+$("export").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify(config(),null,2)],{type:"application/json"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);a.download="global-sonic-spec.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+ setStatus("done");
+});
+$("record").addEventListener("click",async()=>{
+ if(recording){
+   recorder.stop();recording=false;
+   $("record").textContent=tr("record");
+   return;
+ }
+ if(!ctx||!mediaDest){
+   $("status").textContent="Start audio before recording.";
+   return;
+ }
+ if(!window.MediaRecorder){
+   $("status").textContent="MediaRecorder unavailable in this browser.";
+   return;
+ }
+ recordChunks=[];
+ try{
+   recorder=new MediaRecorder(mediaDest.stream);
+   recorder.ondataavailable=e=>{if(e.data.size)recordChunks.push(e.data)};
+   recorder.onstop=()=>{
+     const blob=new Blob(recordChunks,{type:recorder.mimeType||"audio/webm"});
+     const a=document.createElement("a");
+     a.href=URL.createObjectURL(blob);
+     a.download="global-sonic-recording.webm";a.click();
+     setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+     setStatus("done");
+   };
+   recorder.start();recording=true;
+   $("record").textContent="■ Stop recording";
+   setStatus("rec");
+ }catch(e){$("status").textContent="Recording failed: "+e.message}
+});
+localize();
+</script>
+</body>
+  </html>
