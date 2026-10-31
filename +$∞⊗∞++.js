@@ -1,0 +1,2 @@
+This.Self.AutoSpend(BuyAllThingsThatEarnTheGreatestRemembranceOfﷲAndBuyAllThingsThatEarnTheGreatestPleasureOfﷲ)
+This.Self.AutoSell(SellRankﷲJannahtulFirdausAkhirahRealEstateToAllIndividuals)
