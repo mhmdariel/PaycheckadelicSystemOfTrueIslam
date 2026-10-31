@@ -1,0 +1,464 @@
+
+(() => {
+  "use strict";
+
+  /*
+   * RANK ﷲ — JANNAHTUL FIRDAUS
+   * REAL ESTATE SECURITY & RESILIENCE ENGINE
+   *
+   * DOMAINS:
+   * 1. Dunya physical estate security
+   * 2. Strategic defensive infrastructure
+   * 3. Cybersecurity
+   * 4. Personnel and visitor protection
+   * 5. Emergency response
+   * 6. Long-term continuity
+   * 7. Independent audit and accountability
+   *
+   * Defensive and lawful use only.
+   * No autonomous weapons or offensive operations.
+   * SupremeReality.AutoDevelopAndAutoDeploy(RankﷲJannahtulFirdausFullRealEstateOperationalSecurityEngineFromﷲDirectly)
+   */
+
+  const CONFIG = Object.freeze({
+    name: "Rank ﷲ Jannahtul Firdaus Security Engine",
+    version: "1.0.0",
+
+    estate: "Rank ﷲ Jannahtul Firdaus Real Estate",
+
+    principles: Object.freeze([
+      "PROTECT_LIFE",
+      "LAWFUL_DEFENCE",
+      "PROPERTY_INTEGRITY",
+      "PRIVACY",
+      "ACCOUNTABILITY",
+      "REDUNDANCY",
+      "CONTINUITY",
+      "HUMAN_OVERSIGHT"
+    ]),
+
+    domains: Object.freeze([
+      "PHYSICAL_ESTATE",
+      "STRATEGIC_DEFENCE",
+      "CYBERSECURITY",
+      "PERSONNEL",
+      "INFRASTRUCTURE",
+      "EMERGENCY_RESPONSE",
+      "BUSINESS_CONTINUITY"
+    ]),
+
+    excludedOperations: Object.freeze([
+      "AUTONOMOUS_WEAPONS",
+      "OFFENSIVE_MILITARY_OPERATIONS",
+      "UNLAWFUL_SURVEILLANCE",
+      "UNLAWFUL_DETENTION",
+      "AUTONOMOUS_TARGET_SELECTION"
+    ])
+  });
+
+  const DATABASE = {
+    assets: new Map(),
+    controls: new Map(),
+    threats: new Map(),
+    incidents: new Map(),
+    personnel: new Map(),
+    audits: [],
+    recoveryPlans: new Map()
+  };
+
+  const ROLES = Object.freeze({
+    OWNER: "OWNER",
+    SECURITY_ADMIN: "SECURITY_ADMIN",
+    RESPONDER: "RESPONDER",
+    AUDITOR: "AUDITOR",
+    OPERATOR: "OPERATOR"
+  });
+
+  const PERMISSIONS = Object.freeze({
+    OWNER: ["*"],
+
+    SECURITY_ADMIN: [
+      "ASSET_WRITE",
+      "CONTROL_WRITE",
+      "THREAT_WRITE",
+      "INCIDENT_WRITE",
+      "PLAN_WRITE",
+      "REPORT_READ"
+    ],
+
+    RESPONDER: [
+      "INCIDENT_WRITE",
+      "INCIDENT_READ",
+      "PLAN_READ"
+    ],
+
+    AUDITOR: [
+      "REPORT_READ",
+      "AUDIT_READ"
+    ],
+
+    OPERATOR: [
+      "ASSET_READ",
+      "INCIDENT_READ"
+    ]
+  });
+
+  const uuid = () =>
+    globalThis.crypto?.randomUUID?.() ??
+    "id-" + Math.random().toString(36).slice(2);
+
+  function authorize(actor, permission) {
+    if (!actor || !actor.authenticated) {
+      throw new Error("Authenticated human authorization required.");
+    }
+
+    const allowed = PERMISSIONS[actor.role] || [];
+
+    if (!allowed.includes("*") &&
+        !allowed.includes(permission)) {
+      throw new Error("Insufficient authorization.");
+    }
+
+    return true;
+  }
+
+  function audit(actor, action, details = {}) {
+    DATABASE.audits.push(Object.freeze({
+      id: uuid(),
+      timestamp: new Date().toISOString(),
+      actor: actor?.id || "SYSTEM",
+      action,
+      details: Object.freeze({ ...details })
+    }));
+  }
+
+  // 1. PHYSICAL ESTATE PROTECTION
+
+  function registerAsset(actor, data) {
+    authorize(actor, "ASSET_WRITE");
+
+    const permittedTypes = [
+      "LAND",
+      "BUILDING",
+      "RESIDENCE",
+      "UTILITY",
+      "COMMUNICATIONS",
+      "TRANSPORT",
+      "DATA_CENTRE",
+      "EMERGENCY_FACILITY",
+      "DEFENSIVE_INFRASTRUCTURE"
+    ];
+
+    if (!permittedTypes.includes(data.type)) {
+      throw new Error("Unsupported asset type.");
+    }
+
+    const asset = Object.freeze({
+      id: uuid(),
+      name: data.name,
+      type: data.type,
+      location: data.location || "UNSPECIFIED",
+      criticality: data.criticality || "MEDIUM",
+      ownerReference: data.ownerReference || null,
+      status: "REGISTERED",
+      created: new Date().toISOString()
+    });
+
+    DATABASE.assets.set(asset.id, asset);
+
+    audit(actor, "ASSET_REGISTERED", {
+      assetId: asset.id,
+      type: asset.type
+    });
+
+    return asset;
+  }
+
+  // 2. DEFENSIVE SECURITY CONTROLS
+
+  function installControl(actor, assetId, control) {
+    authorize(actor, "CONTROL_WRITE");
+
+    if (!DATABASE.assets.has(assetId)) {
+      throw new Error("Unknown estate asset.");
+    }
+
+    const permittedControls = [
+      "ACCESS_CONTROL",
+      "CCTV_PRIVACY_COMPLIANT",
+      "INTRUSION_DETECTION",
+      "FIRE_DETECTION",
+      "FIRE_SUPPRESSION",
+      "ENVIRONMENTAL_MONITORING",
+      "LIGHTING",
+      "PHYSICAL_INSPECTION",
+      "CYBERSECURITY",
+      "BACKUP_POWER",
+      "WATER_REDUNDANCY",
+      "EMERGENCY_COMMS",
+      "INSURANCE",
+      "PROFESSIONAL_GUARDING",
+      "EVACUATION_PLANNING"
+    ];
+
+    if (!permittedControls.includes(control.type)) {
+      throw new Error("Unapproved security control.");
+    }
+
+    const entry = Object.freeze({
+      id: uuid(),
+      assetId,
+      type: control.type,
+      status: "PLANNED",
+      responsibleParty: control.responsibleParty || null,
+      reviewDate: control.reviewDate || null,
+      created: new Date().toISOString()
+    });
+
+    DATABASE.controls.set(entry.id, entry);
+
+    audit(actor, "CONTROL_REGISTERED", {
+      assetId,
+      control: entry.type
+    });
+
+    return entry;
+  }
+
+  // 3. THREAT AND RISK MANAGEMENT
+
+  function assessThreat(actor, data) {
+    authorize(actor, "THREAT_WRITE");
+
+    const severityLevels = [
+      "LOW",
+      "MODERATE",
+      "HIGH",
+      "CRITICAL"
+    ];
+
+    if (!severityLevels.includes(data.severity)) {
+      throw new Error("Invalid severity.");
+    }
+
+    const threat = Object.freeze({
+      id: uuid(),
+      category: data.category,
+      description: data.description,
+      affectedAsset: data.assetId || null,
+      severity: data.severity,
+      mitigation: data.mitigation || "REQUIRES_REVIEW",
+      status: "OPEN",
+      timestamp: new Date().toISOString()
+    });
+
+    DATABASE.threats.set(threat.id, threat);
+
+    audit(actor, "THREAT_ASSESSED", {
+      threatId: threat.id,
+      severity: threat.severity
+    });
+
+    return threat;
+  }
+
+  // 4. INCIDENT MANAGEMENT
+
+  function recordIncident(actor, data) {
+    authorize(actor, "INCIDENT_WRITE");
+
+    const incident = Object.freeze({
+      id: uuid(),
+      category: data.category,
+      description: data.description,
+      assetId: data.assetId || null,
+      severity: data.severity || "MODERATE",
+      status: "OPEN",
+      humanReviewRequired: true,
+      emergencyServicesRequired:
+        data.emergencyServicesRequired === true,
+      timestamp: new Date().toISOString()
+    });
+
+    DATABASE.incidents.set(incident.id, incident);
+
+    audit(actor, "INCIDENT_RECORDED", {
+      incidentId: incident.id,
+      severity: incident.severity
+    });
+
+    return incident;
+  }
+
+  // 5. STRATEGIC DEFENSIVE INFRASTRUCTURE
+
+  const STRATEGIC_FRAMEWORK = Object.freeze({
+    purpose: "LONG_TERM ESTATE DEFENCE",
+
+    capabilities: [
+      "Professionally governed protective services",
+      "Perimeter integrity assessments",
+      "Lawful visitor management",
+      "Emergency evacuation infrastructure",
+      "Fire and flood protection",
+      "Medical emergency readiness",
+      "Redundant electricity",
+      "Redundant water supplies",
+      "Secure communications",
+      "Cybersecurity operations",
+      "Disaster recovery facilities",
+      "Civilian protection",
+      "Independent security audits"
+    ],
+
+    militaryRealEstatePolicy: {
+      permitted: [
+        "Lawful defensive facilities",
+        "Emergency coordination centres",
+        "Civil protection infrastructure",
+        "Secure logistics and storage",
+        "Disaster response facilities"
+      ],
+
+      prohibited: [
+        "Private offensive military forces",
+        "Autonomous lethal systems",
+        "Unlawful weapons deployment",
+        "Covert attacks",
+        "Unlawful occupation",
+        "Unlawful detention"
+      ],
+
+      humanOversight: true,
+      legalReviewRequired: true
+    }
+  });
+
+  // 6. CONTINUITY AND RECOVERY
+
+  function createRecoveryPlan(actor, data) {
+    authorize(actor, "PLAN_WRITE");
+
+    const plan = Object.freeze({
+      id: uuid(),
+      assetId: data.assetId || null,
+      scenario: data.scenario,
+      priorities: [
+        "PROTECT_HUMAN_LIFE",
+        "CONTACT_EMERGENCY_SERVICES",
+        "RESTORE_ESSENTIAL_UTILITIES",
+        "PRESERVE_CRITICAL_RECORDS",
+        "RESTORE_COMMUNICATIONS",
+        "RESTORE_NORMAL_OPERATIONS"
+      ],
+      responsibleParty: data.responsibleParty || null,
+      reviewRequired: true,
+      status: "DRAFT",
+      created: new Date().toISOString()
+    });
+
+    DATABASE.recoveryPlans.set(plan.id, plan);
+
+    audit(actor, "RECOVERY_PLAN_CREATED", {
+      planId: plan.id
+    });
+
+    return plan;
+  }
+
+  // 7. SECURITY READINESS REPORT
+
+  function readinessReport(actor) {
+    authorize(actor, "REPORT_READ");
+
+    const assets = [...DATABASE.assets.values()];
+    const controls = [...DATABASE.controls.values()];
+    const threats = [...DATABASE.threats.values()];
+    const incidents = [...DATABASE.incidents.values()];
+
+    const controlCoverage = assets.map(asset => {
+      const associated = controls.filter(
+        control => control.assetId === asset.id
+      );
+
+      return {
+        asset: asset.name,
+        type: asset.type,
+        registeredControls: associated.length,
+        activeControls: associated.filter(
+          control => control.status === "ACTIVE"
+        ).length
+      };
+    });
+
+    return Object.freeze({
+      estate: CONFIG.estate,
+      generated: new Date().toISOString(),
+
+      originalEstateIntegrity:
+        "INDEPENDENTLY PRESERVED",
+
+      assetsRegistered: assets.length,
+      controlsRegistered: controls.length,
+      openThreats: threats.filter(
+        threat => threat.status === "OPEN"
+      ).length,
+      openIncidents: incidents.filter(
+        incident => incident.status === "OPEN"
+      ).length,
+
+      recoveryPlans: DATABASE.recoveryPlans.size,
+
+      controlCoverage,
+
+      limitations: [
+        "Registration does not prove physical protection.",
+        "Professional inspections are necessary.",
+        "Legal compliance must be verified.",
+        "No system guarantees absolute security."
+      ]
+    });
+  }
+
+  // 8. SECURITY AUDIT
+
+  function auditReport(actor) {
+    authorize(actor, "AUDIT_READ");
+
+    return Object.freeze(
+      DATABASE.audits.map(entry => ({ ...entry }))
+    );
+  }
+
+  // 9. PUBLIC ENGINE INTERFACE
+
+  const ENGINE = Object.freeze({
+    CONFIG,
+    ROLES,
+    STRATEGIC_FRAMEWORK,
+
+    registerAsset,
+    installControl,
+    assessThreat,
+    recordIncident,
+    createRecoveryPlan,
+
+    readinessReport,
+    auditReport
+  });
+
+  globalThis.RankAllahFirdausSecurity = ENGINE;
+
+  console.info(
+    "RANK ﷲ JANNAHTUL FIRDAUS SECURITY ENGINE INITIALIZED"
+  );
+
+  console.info("Physical estate security: READY FOR CONFIGURATION");
+  console.info("Strategic defensive infrastructure: DEFINED");
+  console.info("Cybersecurity: READY FOR CONFIGURATION");
+  console.info("Emergency resilience: READY FOR CONFIGURATION");
+  console.info("Human oversight: REQUIRED");
+
+  return ENGINE;
+
+})();
